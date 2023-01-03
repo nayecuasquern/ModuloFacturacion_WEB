@@ -41,5 +41,21 @@
             api.Headers.Add("Content-Type", "application/json");
             api.UploadString(apiUrl + "/" + id, "DELETE", "");
         }
+
+        public static Models.FactPayType[] PayTypes(string apiUrl)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactPayType[]>(json);
+        }
+
+        public static Models.FactInvoiceHead[] InvoiceHead(string apiUrl)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead[]>(json);
+        }
     }
 }

@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.v-align {
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+}

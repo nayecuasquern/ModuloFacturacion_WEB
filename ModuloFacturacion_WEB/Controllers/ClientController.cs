@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModuloFacturacion_WEB.Code;
 using ModuloFacturacion_WEB.Models;
@@ -89,6 +91,174 @@ namespace ModuloFacturacion_WEB.Controllers
             {
                 return View();
             }
+        }
+
+        public IActionResult Create_partial()
+        {
+            FactClient client = new FactClient();
+            return PartialView("_CreateClientView", client);
+        }
+        public IActionResult Create_partialm(Models.FactClient client)
+        {
+            try
+            {
+                var newdata = APIConsumer.CreateClient(apiUrl, client);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(client);
+            }
+        }
+        public IActionResult detail_partial(string id)
+        {
+            FactClient client = APIConsumer.Client(apiUrl, id);
+            return PartialView("_DetailClientView", client);
+        }
+        public IActionResult Edit_partial(string id)
+        {
+            FactClient client = APIConsumer.Client(apiUrl, id);
+            return PartialView("_DetailClientView", client);
+        }
+
+        [HttpPost]
+        public IActionResult Edit_partial(Models.FactClient client)
+        {
+
+            try
+            {
+                APIConsumer.SaveClient(apiUrl, client.CliIdentification, client);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Create");
+            }
+
+        }
+        public IActionResult delete_partial(string id)
+        {
+            FactClient client = APIConsumer.Client(apiUrl, id);
+            return PartialView("_DeleteClientView", client);
+        }
+        [HttpPost]
+        public IActionResult Delete_partial(Models.FactClient client)
+        {
+
+            try
+            {
+                APIConsumer.DeleteClient(apiUrl, client.CliIdentification);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Create");
+            }
+
+        }
+
+        public IActionResult PDF()
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document document = new Document(PageSize.A4, 5, 5, 30, 30);
+                PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                document.Open();
+
+                Paragraph paragraph = new Paragraph("Reporte de Clientes", new Font(Font.FontFamily.TIMES_ROMAN, 16));
+                paragraph.Alignment = Element.ALIGN_CENTER;
+                document.Add(paragraph);
+                Paragraph espacio = new Paragraph("              ");
+                document.Add(espacio);
+                document.AddTitle("Reporte de Clientes");
+
+                PdfPTable table = new PdfPTable(8);
+
+                PdfPCell cell1 = new PdfPCell(new Phrase("ID", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell1.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell1.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell1);
+
+                PdfPCell cell2 = new PdfPCell(new Phrase("Nombre", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell2.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell2.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell2);
+
+                PdfPCell cell3 = new PdfPCell(new Phrase("Fecha nacimiento", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell3.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell3.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell3.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell3);
+
+                PdfPCell cell4 = new PdfPCell(new Phrase("Dirección", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell4.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell4.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell4.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell4);
+
+                PdfPCell cell5 = new PdfPCell(new Phrase("Teléfono", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell5.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell5.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell5.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell5);
+
+                PdfPCell cell6 = new PdfPCell(new Phrase("Correo", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell6.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell6.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell6.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell6);
+
+                PdfPCell cell7 = new PdfPCell(new Phrase("Estado", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell7.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell7.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell7.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell7);
+
+                PdfPCell cell8 = new PdfPCell(new Phrase("Tipo", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell8.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell8.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell8.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell8);
+
+                foreach (FactClient client in APIConsumer.Clients(apiUrl))
+                {
+                    PdfPCell cell_1 = new PdfPCell(new Phrase(client.CliIdentification.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_2 = new PdfPCell(new Phrase(client.CliName.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_3 = new PdfPCell(new Phrase(client.CliBirthday.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_4 = new PdfPCell(new Phrase(client.CliAddres.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_5 = new PdfPCell(new Phrase(client.CliPhone.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_6 = new PdfPCell(new Phrase(client.CliMail.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_7 = new PdfPCell(new Phrase(client.CliStatus.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_8 = new PdfPCell(new Phrase(client.TypId.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+
+                    cell_1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_3.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_4.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_5.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_6.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_7.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_8.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                    table.AddCell(cell_1);
+                    table.AddCell(cell_2);
+                    table.AddCell(cell_3);
+                    table.AddCell(cell_4);
+                    table.AddCell(cell_5);
+                    table.AddCell(cell_6);
+                    table.AddCell(cell_7);
+                    table.AddCell(cell_8);
+                }
+                document.Add(table);
+                document.Close();
+                writer.Close();
+                var constant = ms.ToArray();
+                return File(constant, "application/vnd", "Report.pdf");
+
+            }
+            return View();
         }
     }
 }
