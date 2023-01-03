@@ -1,0 +1,68 @@
+﻿@model ModuloFacturacion_WEB.Models.FactClient
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FactClient</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CliIdentification" class="control-label"></label>
+                <input asp-for="CliIdentification" class="form-control" />
+                <span asp-validation-for="CliIdentification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CliName" class="control-label"></label>
+                <input asp-for="CliName" class="form-control" />
+                <span asp-validation-for="CliName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CliBirthday" class="control-label"></label>
+                <input asp-for="CliBirthday" class="form-control" />
+                <span asp-validation-for="CliBirthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CliAddres" class="control-label"></label>
+                <input asp-for="CliAddres" class="form-control" />
+                <span asp-validation-for="CliAddres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CliPhone" class="control-label"></label>
+                <input asp-for="CliPhone" class="form-control" />
+                <span asp-validation-for="CliPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CliMail" class="control-label"></label>
+                <input asp-for="CliMail" class="form-control" />
+                <span asp-validation-for="CliMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CliStatus" class="control-label"></label>
+                <input asp-for="CliStatus" class="form-control" />
+                <span asp-validation-for="CliStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypId" class="control-label"></label>
+                <input asp-for="TypId" class="form-control" />
+                <span asp-validation-for="TypId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

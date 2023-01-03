@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ModuloFacturacion_WEB.Models.FactClient>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CliIdentification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CliName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CliBirthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CliAddres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CliPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CliMail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CliStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliIdentification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliBirthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliAddres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliMail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CliStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.CliIdentification }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.CliIdentification }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.CliIdentification })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
