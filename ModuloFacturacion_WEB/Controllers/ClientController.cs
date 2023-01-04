@@ -136,26 +136,7 @@ namespace ModuloFacturacion_WEB.Controllers
             }
 
         }
-        public IActionResult delete_partial(string id)
-        {
-            FactClient client = APIConsumer.Client(apiUrl, id);
-            return PartialView("_DeleteClientView", client);
-        }
-        [HttpPost]
-        public IActionResult Delete_partial(Models.FactClient client)
-        {
-
-            try
-            {
-                APIConsumer.DeleteClient(apiUrl, client.CliIdentification);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return RedirectToAction("Create");
-            }
-
-        }
+        
 
         public IActionResult PDF()
         {
