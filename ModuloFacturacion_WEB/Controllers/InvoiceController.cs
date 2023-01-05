@@ -9,8 +9,8 @@ namespace ModuloFacturacion_WEB.Controllers
     public class InvoiceController : Controller
     {
 
-        string apiUrl = "https://localhost:7164/api/FactClients";
-        string apiUrl2 = "https://localhost:7164/api/FactInvoiceHeads";
+        string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
+        string apiUrl2 = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads";
         public IActionResult Index()
         {
             var clientes = APIConsumer.Clients(apiUrl);

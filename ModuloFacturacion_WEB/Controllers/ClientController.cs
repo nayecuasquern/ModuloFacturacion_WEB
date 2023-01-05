@@ -9,8 +9,8 @@ namespace ModuloFacturacion_WEB.Controllers
 {
     public class ClientController : Controller
     {
-        string apiUrl1 = "https://localhost:7039/api/FactClients";
-        string apiUrl = "https://localhost:7164/api/FactClients";
+        
+        string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
         // GET: ClientController
         public ActionResult Index()
         {
