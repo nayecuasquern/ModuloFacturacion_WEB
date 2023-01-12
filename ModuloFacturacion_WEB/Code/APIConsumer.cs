@@ -10,6 +10,16 @@
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactClient[]>(json);
         }
 
+        public static Models.FactClient[] Clients_SearchFor(string apiUrl, string? searchFor)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("content-type", "application/json");
+            api.Headers.Add("Accept", "application/json");
+            var json = api.DownloadString(apiUrl + "?searchFor=" + searchFor);
+            var datos = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactClient[]>(json);
+            return datos;
+        }
+
         public static Models.FactClient Client(string apiUrl, string id)
         {
             var api = new System.Net.WebClient();
@@ -56,6 +66,14 @@
             api.Headers.Add("Content-Type", "application/json");
             var json = api.DownloadString(apiUrl);
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead[]>(json);
+        }
+
+        public static Models.Product[] Productos(string apiUrl)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Product[]>(json);
         }
     }
 }

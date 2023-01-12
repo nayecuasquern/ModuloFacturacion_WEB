@@ -3,6 +3,7 @@ using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
 using ModuloFacturacion_WEB.Code;
 using ModuloFacturacion_WEB.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ModuloFacturacion_WEB.Controllers
 {
@@ -11,12 +12,63 @@ namespace ModuloFacturacion_WEB.Controllers
 
         string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
         string apiUrl2 = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads";
-        public IActionResult Index()
+        string apiUrl3 = "https://apisalida.azurewebsites.net/api/Productoes";
+
+        public IActionResult Index(string? searchFor)
+        {
+            ViewBag.SearchFor = "" + searchFor;
+            ViewBag.ListaClientes = listaClientes();
+            ViewBag.ListaTipoPago = listaTipoPago();
+            ViewBag.ListaProductos = listaProductos();
+
+            if (string.IsNullOrWhiteSpace(searchFor))
+            {
+                return View(APIConsumer.Clients(apiUrl));
+            }
+            else
+            {
+                return View(APIConsumer.Clients_SearchFor(apiUrl + "/Buscador", searchFor));
+            }
+        }
+
+        private List<Product> listaProductos()
+        {
+            var productos = APIConsumer.Productos(apiUrl3);
+            var lista = productos.Select(f => new Product
+            {
+                prod_id = f.prod_id.ToString(),
+                prod_nombre = f.prod_nombre,
+                prod_descripcion = f.prod_descripcion
+            })
+            .ToList();
+            return lista;
+        }
+
+        private List<FactClient> listaClientes()
         {
             var clientes = APIConsumer.Clients(apiUrl);
+            var lista = clientes.Select(f => new FactClient
+            {
+                CliIdentification = f.CliIdentification,
+                CliName = f.CliName
+            }).ToList();
 
-            return View(clientes);
+            return lista;
         }
+
+        private List<FactPayType> listaTipoPago()
+        {
+            var urlPagos = apiUrl.Replace("FactClients", "FactPayTypes");
+            var tipoPagos = APIConsumer.PayTypes(urlPagos);
+            var lista = tipoPagos.Select(f => new FactPayType
+            {
+                TypId = f.TypId,
+                Typ = f.Typ
+            }).ToList();
+
+            return lista;
+        }
+
 
         [HttpPost]
         public IActionResult PDFFact()
