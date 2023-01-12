@@ -46,7 +46,7 @@
                          <select class="selectpicker" data-style="btn-outline-info" aria-label="Default select example" >
                                 @foreach (var item in ViewBag.ListaTipoPago)
                                 {
-                                    <option class="pagos">@(((FactPayType)item).TypId).@(((FactPayType)item).Typ)</option>
+                                    <option class="pagos">@(((FactPayType)item).TypId). @(((FactPayType)item).Typ)</option>
                                 }
                          </select>
                     </div>
@@ -103,12 +103,14 @@
             <div class="row align-items-end">
                 <div class="col-sm-3">
                     <div class="mb-2">
-                        <select class="form-select" aria-label="Default select example" name="select" id="producto" onChange="valor()">
-                            @foreach (var item in ViewBag.ListaProductos)
-                            {
-                                <option class="clientes">@(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)</option>
-                            }
-                        </select>
+                        <div class="search_select_box">
+                            <select class="selectpicker" data-style="btn-outline-secondary" aria-label="Default select example" name="select" id="producto" onChange="valor()" data-live-search="true">
+                                @foreach (var item in ViewBag.ListaProductos)
+                                {
+                                    <option value="@item" class="optionP">@(((Product)item).prod_id). @(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -170,10 +172,21 @@
             var select = document.getElementById("producto");
             var options = document.getElementsByClassName("optionP");
             var resp = options[select.selectedIndex];
-
+            console.log(resp.value)
             return resp.text;
         }
     </script>
+    <script>
+        function productoSeleccionado() {
+            var select = document.getElementById("producto");
+            var options = document.getElementsByClassName("optionP");
+            var resp = options[select.selectedIndex];
+            
+            return resp.value;
+        }
+    </script>
+
+
     <script>
         function clienteSeleccionado() {
             var select = document.getElementById("cliente");
@@ -186,12 +199,23 @@
         }
     </script>
     <script>
+        $('select').selectpicker();
+        $(function () {
+            $('.search_select_box select').selectpicker();
+        });
+                
+    </script>
+
+    <script>
 
         var total;
         $("#btnAgregar").on("click", function () {
             var subtotal = parseFloat($("#txtprecio").val()) * parseFloat($("#txtcantidad").val())
             var detalle = []
             total = 0;
+            var producto = productoSeleccionado()
+
+            console.log(producto.prod_nombre)
 
             $("#tbProducto tbody").append(
                 $("<tr>").append(
@@ -219,11 +243,5 @@
             sd();
 
         })
-
-        $('select').selectpicker();
-        $(function () {
-            $('.search_select_box select').selectpicker();
-        });
-        });
     </script>
 }
