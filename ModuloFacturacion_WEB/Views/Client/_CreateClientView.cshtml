@@ -43,10 +43,13 @@
                         <input asp-for="CliMail" class="form-control" />
                         <span asp-validation-for="CliMail" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label>Ingrese el estado</label>
-                        <input asp-for="CliStatus" class="form-control" />
-                        <span asp-validation-for="CliStatus" class="text-danger"></span>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <select asp-for="CliStatus" class="form-control">
+                                <option value="True">Activo</option>
+                                <option value="False">Inactivo</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Ingrese el tipo</label>

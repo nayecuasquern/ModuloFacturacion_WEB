@@ -1,6 +1,5 @@
-﻿using iTextSharp.text.pdf;
-using iTextSharp.text;
-using Microsoft.AspNetCore.Http;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
 using ModuloFacturacion_WEB.Code;
 using ModuloFacturacion_WEB.Models;
@@ -9,7 +8,7 @@ namespace ModuloFacturacion_WEB.Controllers
 {
     public class ClientController : Controller
     {
-        
+
         string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
         // GET: ClientController
         public ActionResult Index()
@@ -136,7 +135,7 @@ namespace ModuloFacturacion_WEB.Controllers
             }
 
         }
-        
+
 
         public IActionResult PDF()
         {

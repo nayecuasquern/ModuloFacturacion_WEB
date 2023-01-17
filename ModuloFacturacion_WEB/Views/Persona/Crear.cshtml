@@ -1,0 +1,122 @@
+﻿@model ModuloFacturacion_WEB.Models.FactClient
+@{
+    ViewData["Title"] = "Crear";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title text-primary text-center">Ingreso de cliente</h2>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+
+                    <div class="row p-3 border-0">
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    </div>
+
+                    <input type="hidden" id="clientId" asp-for="CliIdentification" />
+
+                    <div class="form-group">
+                        <label>Cédula</label>
+                        <input asp-for="CliIdentification" class="form-control" placeholder="Ingrese la cédula" />
+                        <span asp-validation-for="CliIdentification" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input asp-for="CliName" class="form-control" placeholder="Ingrese los nombres" />
+                        <span asp-validation-for="CliName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Dirección</label>
+                        <input asp-for="CliAddres" class="form-control" placeholder="Ingrese la dirección" />
+                        <span asp-validation-for="CliAddres" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input asp-for="CliMail" class="form-control" placeholder="Ingrese el correo electrónico" />
+                        <span asp-validation-for="CliMail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>N° Celular</label>
+                        <input asp-for="CliPhone" class="form-control" placeholder="Ingrese el N° Celular" />
+                        <span asp-validation-for="CliPhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de nacimiento</label>
+                        <input type="date" asp-for="CliBirthday" class="form-control" placeholder="Ingrese la fecha de nacimiento" />
+                        <span asp-validation-for="CliBirthday" class="text-danger"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Estado</label>
+                            <select asp-for="CliStatus" class="form-control">
+                                <option value="True">Activo</option>
+                                <option value="False">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Tipo</label>
+                            <select asp-for="CliStatus" class="form-control">
+                                <option type="number" value="1">Credito</option>
+                                <option type="number" value="2">Contado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-6">
+    <h2 class="text-primary">Lista de clientes</h2>
+</div>
+
+<button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#myModal">Agregar Cliente</button>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <table id="tblData" class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Correo eletrónico</th>
+                        <th>N° Celular</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>Estado</th>
+                        <th>Tipo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+  
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/modalForms.js" ></script>
+}
