@@ -184,6 +184,7 @@
 
                                 <input type="hidden" id="mostrarDatosProducto" name="mostrarDatosProducto" />
                                 <input type="hidden" id="idProductoElegido" name="idProductoElegido" />
+                                <input type="hidden" id="textProducto" name="textProducto" />
 
                                 <select class="selectpicker" data-style="btn-outline-secondary"
                                         aria-label="Default select example" name="selectProduct" id="producto"
@@ -297,11 +298,9 @@
     </script>
 
     <script>
-
         function onProductoElegido() {
             mostrarDatosProducto.value = "SI";
             mostrarDatosCliente.value = "NO";
-
 
             var productoElegido = document.getElementById("productoElegido");
             var select = document.getElementById("producto");
@@ -309,10 +308,10 @@
             var resp = options[select.selectedIndex];
 
             idProductoElegido.value = resp.value
-            console.log(idProductoElegido.value)
+            textProducto.value = resp.text;
             document.forms[0].submit()
-            return resp.text
         }
+
     </script>
 
 
@@ -327,22 +326,22 @@
     </script>
 
     <script>
-        function valor() {
-            var select = document.getElementById("producto");
-            var options = document.getElementsByClassName("optionP");
-            var resp = options[select.selectedIndex];
-            console.log(resp.value)
-            return resp.text;
-        }
+        //function valor() {
+        //    var select = document.getElementById("producto");
+        //    var options = document.getElementsByClassName("optionP");
+        //    var resp = options[select.selectedIndex];
+        //    console.log(resp.value)
+        //    return resp.text;
+        //}
     </script>
     <script>
-        function productoSeleccionado() {
-            var select = document.getElementById("producto");
-            var options = document.getElementsByClassName("optionP");
-            var resp = options[select.selectedIndex];
-            console.log(resp.value)
-            return resp.value;
-        }
+        //function productoSeleccionado() {
+        //    var select = document.getElementById("producto");
+        //    var options = document.getElementsByClassName("optionP");
+        //    var resp = options[select.selectedIndex];
+        //    console.log(resp.value)
+        //    return resp.value;
+        //}
     </script>
 
 
@@ -366,19 +365,16 @@
     </script>
 
     <script>
-
         var total;
         $("#btnAgregar").on("click", function () {
             var subtotal = parseFloat($("#txtprecio").val()) * parseFloat($("#txtcantidad").val())
             var detalle = []
             total = 0;
-            var producto = productoSeleccionado()
-
-            console.log(producto.prod_nombre)
+            var producto = $("#textProducto").val();
 
             $("#tbProducto tbody").append(
                 $("<tr>").append(
-                    $("<td>").text(valor()),
+                    $("<td>").text(producto),
                     $("<td>").text($("#txtprecio").val()),
                     $("<td>").text($("#txtcantidad").val()),
                     $("<td>").text("false"),
