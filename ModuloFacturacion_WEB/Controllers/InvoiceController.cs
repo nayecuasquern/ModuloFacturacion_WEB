@@ -65,13 +65,21 @@ namespace ModuloFacturacion_WEB.Controllers
             {
                 var datos = APIConsumer.ProductoElegido(apiUrl3 + "/" + formData["idProductoElegido"]);
                 ViewBag.ProductoElegido = datos;
+                if (datos.prod_iva==true)
+                {
+                    ViewBag.IVA = "SI";
+                } else
+                {
+                    ViewBag.IVA = "NO";
+                }
+                
             }
             return View();
         }
 
         private List<Product> listaProductos()
         {
-            var productos = APIConsumer.Productos(apiUrl3);
+            var productos = APIConsumer.Productos(apiUrl3).Where(p => p.prod_stock > 0);
             var lista = productos.Select(f => new Product
             {
                 prod_id = f.prod_id.ToString(),
@@ -84,7 +92,7 @@ namespace ModuloFacturacion_WEB.Controllers
 
         private List<FactClient> listaClientes()
         {
-            var clientes = APIConsumer.Clients(apiUrl);
+            var clientes = APIConsumer.Clients(apiUrl).Where(p => p.CliStatus == true);
             var lista = clientes.Select(f => new FactClient
             {
                 CliIdentification = f.CliIdentification,
