@@ -20,6 +20,14 @@
             return datos;
         }
 
+        public static Models.FactClient ClienteElegido(string apiUrl)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactClient>(json);
+        }
+
         public static Models.FactClient Client(string apiUrl, string id)
         {
             var api = new System.Net.WebClient();
@@ -74,6 +82,14 @@
             api.Headers.Add("Content-Type", "application/json");
             var json = api.DownloadString(apiUrl);
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Product[]>(json);
+        }
+
+        public static Models.Product ProductoElegido(string apiUrl)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Product>(json);
         }
     }
 }

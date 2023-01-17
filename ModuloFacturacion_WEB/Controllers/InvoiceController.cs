@@ -21,14 +21,51 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
 
-            if (string.IsNullOrWhiteSpace(searchFor))
-            {
-                return View(APIConsumer.Clients(apiUrl));
-            }
+
+            return View(APIConsumer.InvoiceHead(apiUrl2));
+
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            ViewBag.ListaClientes = listaClientes();
+            ViewBag.ListaTipoPago = listaTipoPago();
+            ViewBag.ListaProductos = listaProductos();
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(IFormCollection formData)
+        {
+            ViewBag.ListaClientes = listaClientes();
+            ViewBag.ListaTipoPago = listaTipoPago();
+            ViewBag.ListaProductos = listaProductos();
+
+            var cliente = new FactClient();
+            cliente.CliIdentification = formData["txtcedula"];
+            cliente.CliName = formData["txtnombre"];
+            cliente.CliMail = formData["txtcorreo"];
+            cliente.CliAddres = formData["txtdireccion"];
+            if (formData["txttipo"] == "Cliente no seleccionado" || formData["txttipo"] == "")
+                cliente.TypId = 1;
             else
+                cliente.TypId = int.Parse(formData["txttipo"]);
+
+            ViewBag.ClienteElegido = cliente;
+
+            if (formData["mostrarDatosCliente"] == "SI")
             {
-                return View(APIConsumer.Clients_SearchFor(apiUrl + "/Buscador", searchFor));
+                var datos = APIConsumer.ClienteElegido(apiUrl + "/" + formData["cedulaClienteElegido"]);
+                ViewBag.ClienteElegido = datos;
             }
+            if (formData["mostrarDatosProducto"] == "SI")
+            {
+                var datos = APIConsumer.ProductoElegido(apiUrl3 + "/" + formData["idProductoElegido"]);
+                ViewBag.ProductoElegido = datos;
+            }
+            return View();
         }
 
         private List<Product> listaProductos()
@@ -55,6 +92,8 @@ namespace ModuloFacturacion_WEB.Controllers
 
             return lista;
         }
+
+
 
         private List<FactPayType> listaTipoPago()
         {
