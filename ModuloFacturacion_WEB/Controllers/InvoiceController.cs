@@ -42,6 +42,7 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaClientes = listaClientes();
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
+            ViewBag.textProducto = "" + formData["textProducto"];
 
             var cliente = new FactClient();
             cliente.CliIdentification = formData["txtcedula"];
