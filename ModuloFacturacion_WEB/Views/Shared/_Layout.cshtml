@@ -5,12 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Módulo de Facturación</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />@*
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />*@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />*@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" href="~/ModuloFacturacion_WEB.styles.css" asp-append-version="true" />
+    <style type="text/css">
+
+        *{
+            padding:0px;
+            margin:0px;
+        }
+
+        .container-fluid {
+            background-color: lightgray;
+        }
+         
+        .navbar-collapse{
+            
+            margin:auto;
+            width:500px;
+            font-family:Arial,Arial, Helvetica, sans-serif;
+        }
+
+        .nav-item {
+            list-style:none;
+        }    
+
+        .navbar-nav li a {
+            color:#000;
+            text-decoration:none;
+            padding:10px 15px;
+            display:block;
+        }
+
+        .navbar-nav li a:hover {
+            background-color:silver;
+        }
+
+        .navbar-nav > li {
+            float: left;
+        }
+
+        .navbar-nav li ul{
+            display:none;
+            position:relative;
+            min-width:140px;
+        }
+
+        .navbar-nav li:hover > ul{
+            display:block;
+        }    
+    </style>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -26,18 +74,32 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Index">Clients</a>
+                            <a class="nav-link text-dark" href="">Catálogos</a>
+                            <ul>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Persona" asp-action="Crear">Clients</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Invoice" asp-action="Index">Invoice</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Invoice" asp-action="Index">Invoice</a>
+                            <a class="nav-link text-dark" href="">Facturación</a>
+                            <ul>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Invoice" asp-action="Index">Invoice</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" href="">Reportes</a>
+                            <ul>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Persona" asp-action="Crear">Clients</a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Persona" asp-action="Crear">Persona</a>
-                        </li>
-
                     </ul>
                 </div>
             </div>
