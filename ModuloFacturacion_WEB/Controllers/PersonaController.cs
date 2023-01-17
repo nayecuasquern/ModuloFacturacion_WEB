@@ -17,7 +17,7 @@ namespace ModuloFacturacion_WEB.Controllers
         public async Task<IActionResult> Crear(string? id)
         {
             FactClient client = new FactClient();
-            if (id == "" || id == null)
+            if (id == null)
             {
                 return View(client);
 
@@ -35,7 +35,19 @@ namespace ModuloFacturacion_WEB.Controllers
 
             if (ModelState.IsValid)
             {
-                if (cliente.CliIdentification == null || cliente.CliIdentification == "")
+                var datos = APIConsumer.Clients(apiUrl);
+                bool aux = true;
+
+                foreach (var client in datos)
+                {                    
+                    if(client.CliIdentification.Equals(cliente.CliIdentification))
+                    {
+                        aux = false;
+                        break;
+                    }
+                }
+
+                if (aux)
                 {
                     var newdata = APIConsumer.CreateClient(apiUrl, cliente);
                     return RedirectToAction(nameof(Crear));
@@ -51,6 +63,33 @@ namespace ModuloFacturacion_WEB.Controllers
             }
             return View(cliente);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Crear(FactClient cliente)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        var client = APIConsumer.Client(apiUrl, cliente.);
+        //        if (cliente.CliIdentification == null || cliente.CliIdentification == "")
+        //        {
+        //            var newdata = APIConsumer.CreateClient(apiUrl, cliente);
+        //            return RedirectToAction(nameof(Crear));
+        //        }
+        //        else
+        //        {
+        //            APIConsumer.SaveClient(apiUrl, cliente.CliIdentification, cliente);
+        //            return RedirectToAction(nameof(Crear), new { cliIdentification = "" });
+
+
+        //        }
+
+        //    }
+        //    return View(cliente);
+        //}
+
+
 
         [HttpPost]
         public async Task<IActionResult> ObtenerDatos()
