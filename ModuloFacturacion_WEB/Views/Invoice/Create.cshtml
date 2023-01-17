@@ -37,15 +37,11 @@
                 <div class="row align-items-end">
                     <div class="col-sm-4">
                         <div class="mb-2">
-                            <label asp-for="InvoiceHeadId" class="control-label">Nro Factura</label>
-                            <input asp-for="InvoiceHeadId" class="form-control" value="0" />
+                            <input asp-for="InvoiceHeadId" type="hidden" class="form-control" value="0" />
                             <span asp-validation-for="InvoiceHeadId" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-2">
+
                             <label asp-for="InvoiceDate" class="control-label">Fecha</label>
-                            <input asp-for="InvoiceDate" class="form-control" />
+                            <input disabled id="fecha" class="form-control">
                             <span asp-validation-for="InvoiceDate" class="text-danger"></span>
                         </div>
                     </div>
@@ -346,13 +342,11 @@
     </script>
 
     <script>
-        //function valor() {
-        //    var select = document.getElementById("producto");
-        //    var options = document.getElementsByClassName("optionP");
-        //    var resp = options[select.selectedIndex];
-        //    console.log(resp.value)
-        //    return resp.text;
-        //}
+        $(document).ready(function(){
+            var f = new Date();
+            var text = f.getDate() + "/" + f.getMonth()+1 + "/" + f.getFullYear();
+            document.getElementById("fecha").value = text;
+        });
     </script>
     <script>
         //function productoSeleccionado() {
@@ -366,6 +360,8 @@
 
 
     <script>
+
+
         function clienteSeleccionado() {
             var select = document.getElementById("cliente");
             var options = document.getElementsByClassName("clientes");
