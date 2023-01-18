@@ -2,7 +2,6 @@
 
 $(document).ready(function () {
     loadDataTable();
-    alert("Entra")
 
     var id = document.getElementById("clientId");
     if (id === "") {
