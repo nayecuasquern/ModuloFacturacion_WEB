@@ -6,6 +6,7 @@ namespace ModuloFacturacion_WEB.Controllers
 {
     public class PersonaController : Controller
     {
+
         string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
 
         public IActionResult Index()
@@ -38,8 +39,8 @@ namespace ModuloFacturacion_WEB.Controllers
                 bool aux = true;
 
                 foreach (var client in datos)
-                {
-                    if (client.CliIdentification.Equals(cliente.CliIdentification))
+                {                    
+                    if(client.CliIdentification.Equals(cliente.CliIdentification))
                     {
                         aux = false;
                         break;
@@ -96,6 +97,5 @@ namespace ModuloFacturacion_WEB.Controllers
             var datos = APIConsumer.Clients(apiUrl);
             return Json(new { data = datos });
         }
-
     }
 }

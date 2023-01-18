@@ -4,7 +4,7 @@ $(document).ready(function () {
     loadDataTable();
 
     var id = document.getElementById("clientId");
-
+    
     if (id.value != "") {
         $('#myModal').modal('show');
 
