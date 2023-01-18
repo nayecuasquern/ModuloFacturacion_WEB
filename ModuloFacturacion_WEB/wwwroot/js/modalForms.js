@@ -4,10 +4,9 @@ $(document).ready(function () {
     loadDataTable();
 
     var id = document.getElementById("clientId");
-
+    alert(id.value)
     if (id.value != "") {
         $('#myModal').modal('show');
-
     }
 });
 

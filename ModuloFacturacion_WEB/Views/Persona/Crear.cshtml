@@ -6,10 +6,8 @@
 
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>*@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 
 
 
@@ -27,11 +25,11 @@
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     </div>
 
-                    @*<input type="hidden" id="clientId" asp-for="CliIdentification" />*@
+                    <input type="hidden" id="clientId" asp-for="CliIdentification" />
 
                     <div class="form-group">
                         <label>Cédula</label>
-                        <input asp-for="CliIdentification" id="clientId" class="form-control" placeholder="Ingrese la cédula" />
+                        <input asp-for="CliIdentification" class="form-control" placeholder="Ingrese la cédula" />
                         <span asp-validation-for="CliIdentification" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -71,9 +69,9 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Tipo</label>
-                            <select asp-for="TypId" class="form-control">
-                                <option type="number" value="1">Efectivo</option>
-                                <option type="number" value="2">Crédito</option>
+                            <select asp-for="CliStatus" class="form-control">
+                                <option type="number" value="1">Credito</option>
+                                <option type="number" value="2">Contado</option>
                             </select>
                         </div>
                     </div>
@@ -118,7 +116,7 @@
 </div>
 
 @section Scripts{
-
+  
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/modalForms.js"></script>
+    <script src="~/js/modalForms.js" ></script>
 }
