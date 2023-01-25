@@ -26,6 +26,7 @@ namespace ModuloFacturacion_WEB.Controllers
 
         }
 
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -115,6 +116,13 @@ namespace ModuloFacturacion_WEB.Controllers
             }).ToList();
 
             return lista;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ObtenerDatos()
+        {
+            var datos = APIConsumer.InvoiceHead(apiUrl2);
+            return Json(new { data = datos });
         }
 
 

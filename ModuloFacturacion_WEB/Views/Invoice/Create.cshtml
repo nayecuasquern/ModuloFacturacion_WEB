@@ -11,10 +11,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-@*    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />*@
+    @*    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />*@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
-@*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    @*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -39,20 +39,16 @@
 
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="card-body">
                 <div class="row align-items-end">
                     <div class="col-sm-4">
                         <div class="mb-2">
-                            <label asp-for="InvoiceHeadId" class="control-label">Nro Factura</label>
-                            <input asp-for="InvoiceHeadId" class="form-control" value="0" />
+                            <input asp-for="InvoiceHeadId" type="hidden" class="form-control" value="0" />
                             <span asp-validation-for="InvoiceHeadId" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-2">
+
                             <label asp-for="InvoiceDate" class="control-label">Fecha</label>
-                            <input asp-for="InvoiceDate" class="form-control" />
+                            <input disabled id="fecha" class="form-control">
                             <span asp-validation-for="InvoiceDate" class="text-danger"></span>
                         </div>
                     </div>
@@ -70,9 +66,10 @@
                                     <select asp-for="CliIdentification" class="selectpicker" data-style="btn-outline-info"
                                             aria-label="Default select example" name="selectClient" id="cliente"
                                             onChange="onClienteElegido()" data-live-search="true">
+                                        <option selected="true" disabled="enabled">Seleccione el cliente</option>
                                         @foreach (var item in ViewBag.ListaClientes)
                                         {
-                                            <option selected="selected" class="clientes" id="clienteElegido" value="@(((FactClient)item).CliIdentification)">@(((FactClient)item).CliIdentification) - @(((FactClient)item).CliName)</option>
+                                            <option class="clientes" id="clienteElegido" value="@(((FactClient)item).CliIdentification)">@(((FactClient)item).CliIdentification) - @(((FactClient)item).CliName)</option>
                                         }
                                     </select>
                                     <span asp-validation-for="CliIdentification" class="text-danger"></span>
@@ -192,14 +189,18 @@
 
                                 <input type="hidden" id="mostrarDatosProducto" name="mostrarDatosProducto" />
                                 <input type="hidden" id="idProductoElegido" name="idProductoElegido" />
-                                <input type="hidden" id="textProducto" name="textProducto" value="@ViewBag.textProducto"/>
+                                <input type="hidden" id="textProducto" name="textProducto" value="@ViewBag.textProducto" />
+                                <input type="hidden" id="ivaProd" name="ivaProd" value="@ViewBag.IVA" />
 
                                 <select class="selectpicker" data-style="btn-outline-secondary"
                                         aria-label="Default select example" name="selectProduct" id="producto"
                                         onChange="onProductoElegido()" data-live-search="true">
+                                    <option selected="true" disabled="enabled">Seleccione un producto</option>
                                     @foreach (var item in ViewBag.ListaProductos)
                                     {
-                                        <option selected="selected" class="productos" id="productoElegido" value="@(((Product)item).prod_id)">@(((Product)item).prod_id). @(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)</option>
+                                        <option class="productos" id="productoElegido" value="@(((Product)item).prod_id)">
+                                            @(((Product)item).prod_id). @(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)
+                                        </option>
                                     }
 
                                 </select>
@@ -208,27 +209,41 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="mb-2">
-
-
-
-                            <label for="exampleInputEmail1" class="form-label">Precio</label>
+                            <label for="exampleInputEmail1" class="form-label">Producto</label>
                             @if (ViewBag.ProductoElegido != null)
                             {
-                                 <input class="form-control form-control-sm"
-                                   id="txtprecio" name="txtprecio" readonly value="@(((Product)ViewBag.ProductoElegido).prod_pvp)" />
-   
+                                <input class="form-control form-control-sm"
+                                   id="txtproducto" name="txtproducto" readonly
+                                   value="@(((Product)ViewBag.ProductoElegido).prod_id). @(((Product)ViewBag.ProductoElegido).prod_nombre)" />
+
                             }
                             else
                             {
                                 <input class="form-control form-control-sm"
-                                   id="txtprecio" name="txtprecio" readonly value="Producto no seleccionado" />
+                                   id="txtproducto" name="txtproducto" readonly value="Producto no seleccionado" />
                             }
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-1">
+                        <div class="mb-2">
+                            <label for="exampleInputEmail1" class="form-label">Precio</label>
+                            @if (ViewBag.ProductoElegido != null)
+                            {
+                                <input class="form-control form-control-sm"
+                                   id="txtprecio" name="txtprecio" style="width:80px" readonly value="@(((Product)ViewBag.ProductoElegido).prod_pvp)" />
+
+                            }
+                            else
+                            {
+                                <input class="form-control form-control-sm"
+                                   id="txtprecio" name="txtprecio" style="width:80px" readonly value="--" />
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
                         <div class="mb-2">
                             <label for="exampleInputEmail1" class="form-label">Cantidad</label>
-                            <input type="text" class="form-control form-control-sm" id="txtcantidad" name="txtcantidad">
+                            <input type="text" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
                         </div>
                     </div>
 
@@ -259,11 +274,11 @@
                 <div class="row">
                     <div class="mb-2">
                         <label>SUBTOTAL</label>
-                        <input asp-for="InvoiceSubtotal" class="form-control" />
+                        <input asp-for="InvoiceSubtotal" class="form-control" id="tdsubtotal" />
                         <span asp-validation-for="InvoiceSubtotal" class="text-danger"></span>
 
                         <label>IVA</label>
-                        <input asp-for="InvoiceIva" class="form-control" />
+                        <input asp-for="InvoiceIva" class="form-control" id="tdiva" />
                         <span asp-validation-for="InvoiceIva" class="text-danger"></span>
 
                         <label>TOTAL</label>
@@ -289,17 +304,19 @@
 </html>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script>
 
         function onClienteElegido() {
-            mostrarDatosCliente.value="SI";
-            
+            mostrarDatosCliente.value = "SI";
+
             var clienteElegido = document.getElementById("clienteElegido");
             var select = document.getElementById("cliente");
             var options = document.getElementsByClassName("clientes");
-            var resp = options[select.selectedIndex];
+            var resp = options[select.selectedIndex - 1];
 
             cedulaClienteElegido.value = resp.value
             console.log(cedulaClienteElegido.value)
@@ -315,7 +332,7 @@
             var productoElegido = document.getElementById("productoElegido");
             var select = document.getElementById("producto");
             var options = document.getElementsByClassName("productos");
-            var resp = options[select.selectedIndex];
+            var resp = options[select.selectedIndex - 1];
 
             idProductoElegido.value = resp.value
             textProducto.value = resp.text;
@@ -329,20 +346,18 @@
 
         function getClient() {
             var lista = @((List<FactClient>)ViewBag.ListaClientes)
-                    var select = document.getElementById("cliente");
+                            var select = document.getElementById("cliente");
             (document.getElementById("txtcedula")).value = lista.valueOf()
 
         }
     </script>
 
     <script>
-        //function valor() {
-        //    var select = document.getElementById("producto");
-        //    var options = document.getElementsByClassName("optionP");
-        //    var resp = options[select.selectedIndex];
-        //    console.log(resp.value)
-        //    return resp.text;
-        //}
+        $(document).ready(function () {
+            var f = new Date();
+            var text = f.getDate() + "/" + f.getMonth() + 1 + "/" + f.getFullYear();
+            document.getElementById("fecha").value = text;
+        });
     </script>
     <script>
         //function productoSeleccionado() {
@@ -356,6 +371,8 @@
 
 
     <script>
+
+
         function clienteSeleccionado() {
             var select = document.getElementById("cliente");
             var options = document.getElementsByClassName("clientes");
@@ -384,16 +401,30 @@
             total = 0;
             var producto = $("#textProducto").val();
 
+            var ivaText = (document.getElementById("ivaProd")).value;
+            var iva = 1.12;
+
+            if (ivaText == "SI") {
+
+                var subtotalIVA = parseFloat(precio) * parseFloat(cantidad) * iva;
+                iva = parseFloat(precio) * parseFloat(cantidad) * 0.12;
+            } else {
+                var subtotalIVA = parseFloat(precio) * parseFloat(cantidad);
+                iva = 0;
+            }
+
             $("#tbProducto tbody").append(
                 $("<tr>").append(
                     $("<td>").text(producto),
                     $("<td>").text($("#txtprecio").val()),
                     $("<td>").text($("#txtcantidad").val()),
-                    $("<td>").text("false"),
-                    $("<td>").text(subtotal)
+                    $("<td>").text(ivaText),
+                    $("<td>").text(subtotalIVA)
 
                 )
             )
+
+
 
             $("#tbProducto > tbody > tr").each(function (i, tr) {
                 detalle.push({
@@ -404,6 +435,8 @@
             })
 
             function sd() {
+                (document.getElementById("tdsubtotal")).value = subtotal;
+                (document.getElementById("tdiva")).value = iva;
                 (document.getElementById("tdtotal")).value = total;
             }
 
