@@ -16,14 +16,16 @@ namespace ModuloFacturacion_WEB.Controllers
 
         public async Task<IActionResult> Crear(string? id)
         {
+            
             FactClient client = new FactClient();
-            if (id == null)
+            if (id == null || id.Equals(""))
             {
                 return View(client);
 
             }
             else
             {
+                Console.WriteLine("ESTEBEBEBEBEEBBEBEBEBEB "+id);
                 client = APIConsumer.Client(apiUrl, id);
                 return View(client);
             }
@@ -50,12 +52,12 @@ namespace ModuloFacturacion_WEB.Controllers
                 if (aux)
                 {
                     var newdata = APIConsumer.CreateClient(apiUrl, cliente);
-                    return RedirectToAction(nameof(Crear));
+                    return RedirectToAction(nameof(Crear), new { id = "" });
                 }
                 else
                 {
                     APIConsumer.SaveClient(apiUrl, cliente.CliIdentification, cliente);
-                    return RedirectToAction(nameof(Crear), new { cliIdentification = "" });
+                    return RedirectToAction(nameof(Crear), new { id = "" });
 
 
                 }

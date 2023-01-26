@@ -1,4 +1,5 @@
 ﻿var datatable;
+var clientId = document.getElementById("clientId")
 
 $(document).ready(function () {
     loadDataTable();
@@ -10,7 +11,28 @@ $(document).ready(function () {
 
     }
 });
+function Clean() {
+    clientId.readOnly = false;
+    var clientName = document.getElementById("clientName")
+    var clientAddress = document.getElementById("clientAddress")
+    var clientMail = document.getElementById("clientMail")
+    var clientPhone = document.getElementById("clientPhone")
+    var clientDate = document.getElementById("clientDate")
+    var clientStatus = document.getElementById("clientStatus")
+    var clientTyp = document.getElementById("clientTyp")
 
+    clientId.value = "";
+    clientName.value = "";
+    clientAddress.value = "";
+    clientMail.value = "";
+    clientPhone.value = "";
+    clientDate.value = "";
+    clientStatus.value = "True";
+    clientTyp.value = "1";
+}
+function Identi() {
+    clientId.readOnly = true;
+}
 function loadDataTable() {
     datatable = $('#tblData').DataTable({
 
@@ -20,6 +42,17 @@ function loadDataTable() {
             "type": "POST"
         },
         "columns": [
+            {
+                "data": "cliIdentification",
+                "render": function (data) {
+                    clientId.readOnly = true;
+                    return `
+                    <div>
+                        <a onclick="Identi()" href="/Persona/Crear/${data}"  class="btn btn-success text-white" style="cursor:pointer;">Editar</a>
+                    </div>
+                    `
+                }
+            },
             { "data": "cliIdentification", "whidth": "10" },
             { "data": "cliName", "whidth": "10" },
             { "data": "cliAddres", "whidth": "10" },
@@ -62,18 +95,8 @@ function loadDataTable() {
                         return "X";
 
                     }
-            },
-            {
-                "data": "cliIdentification",
-                "render": function (data) {
-
-                    return `
-                    <div>
-                        <a href="/Persona/Crear/${data}" class="btn btn-success text-white" style="cursor:pointer;">Editar</a>
-                    </div>
-                    `
-                }
             }
+            
         ]
     })
 

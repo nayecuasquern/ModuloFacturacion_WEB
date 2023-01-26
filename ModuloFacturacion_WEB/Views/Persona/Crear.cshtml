@@ -33,33 +33,33 @@
                     </div>
                     <div class="form-group">
                         <label>Nombre</label>
-                        <input asp-for="CliName" class="form-control" placeholder="Ingrese los nombres" />
+                        <input asp-for="CliName" id="clientName" class="form-control" placeholder="Ingrese los nombres" />
                         <span asp-validation-for="CliName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Dirección</label>
-                        <input asp-for="CliAddres" class="form-control" placeholder="Ingrese la dirección" />
+                        <input asp-for="CliAddres" id="clientAddress" class="form-control" placeholder="Ingrese la dirección" />
                         <span asp-validation-for="CliAddres" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Correo Electrónico</label>
-                        <input asp-for="CliMail" class="form-control" placeholder="Ingrese el correo electrónico" />
+                        <input asp-for="CliMail" id="clientMail"  class="form-control" placeholder="Ingrese el correo electrónico" />
                         <span asp-validation-for="CliMail" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>N° Celular</label>
-                        <input asp-for="CliPhone" class="form-control" placeholder="Ingrese el N° Celular" />
+                        <input asp-for="CliPhone" id="clientPhone" class="form-control" placeholder="Ingrese el N° Celular" />
                         <span asp-validation-for="CliPhone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Fecha de nacimiento</label>
-                        <input type="date" asp-for="CliBirthday" class="form-control" placeholder="Ingrese la fecha de nacimiento" />
+                        <input type="date" id="clientDate" asp-for="CliBirthday" class="form-control" placeholder="Ingrese la fecha de nacimiento" />
                         <span asp-validation-for="CliBirthday" class="text-danger"></span>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Estado</label>
-                            <select asp-for="CliStatus" class="form-control">
+                            <select asp-for="CliStatus" id="clientStatus" class="form-control">
                                 <option value="True">Activo</option>
                                 <option value="False">Inactivo</option>
                             </select>
@@ -68,7 +68,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Tipo</label>
-                            <select asp-for="TypId" class="form-control">
+                            <select asp-for="TypId" id="clientTyp" class="form-control">
                                 <option type="number" value="1">Efectivo</option>
                                 <option type="number" value="2">Crédito</option>
                             </select>
@@ -90,13 +90,14 @@
     <h2 class="text-primary">Lista de clientes</h2>
 </div>
 
-<button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#myModal">Agregar Cliente</button>
+<button type="button" onclick="Clean()" class="btn btn-info form-control" data-toggle="modal" data-target="#myModal">Agregar Cliente</button>
 <div class="container my-4">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <table id="tblData" class="table">
                 <thead class="thead-dark">
                     <tr>
+                        <th></th>
                         <th>Cédula</th>
                         <th>Nombre</th>
                         <th>Dirección</th>
@@ -105,7 +106,7 @@
                         <th>Fecha de nacimiento</th>
                         <th>Estado</th>
                         <th>Tipo</th>
-                        <th></th>
+                        
                     </tr>
                 </thead>
             </table>
