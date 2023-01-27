@@ -442,9 +442,9 @@
             (document.getElementById("txtstock")).value = ((resp.text).split(" , "))[4];
 
             if (((resp.text).split(" , "))[5] == "True"){
-                (document.getElementById("txtiva")).value = "Si"
+                (document.getElementById("txtiva")).value = "SI"
             }else{
-                (document.getElementById("txtiva")).value = "No"
+                (document.getElementById("txtiva")).value = "NO"
             }
             
             return ((resp.text).split(" ,"))[0];
@@ -491,8 +491,6 @@
                 )
             )
 
-
-
             $("#tbProducto > tbody > tr").each(function (i, tr) {
                 detalle.push({
                     total: $(tr).find("td:eq(4)").text()
@@ -516,13 +514,14 @@
         var num = 0;
         function AgregarConcepto() {
             let Cantidad = document.getElementById("txtcantidad").value;
-            let Producto = document.getElementById("Producto").value;
+            let Producto = datosProducto();
+            console.log(Cantidad + Producto)
             //let Subtotal = document.getElementById("Subtotal").value;
 
             var precio = $("#txtprecio").val().replace(/,/g, '.');
             var subtotal = parseFloat(precio) * parseFloat(Cantidad);
 
-            var ivaText = (document.getElementById("ivaProd")).value;
+            var ivaText = (document.getElementById("txtiva")).value;
             var iva = 1.12;
 
             if (ivaText == "SI") {
@@ -592,6 +591,7 @@
             document.getElementById("txtcantidad").value = "";
             document.getElementById("txtproducto").value = "Producto no seleccionado";
             document.getElementById("txtprecio").value = "--";
+            document.getElementById("txtiva").value = "--";
 
             num++;
 
