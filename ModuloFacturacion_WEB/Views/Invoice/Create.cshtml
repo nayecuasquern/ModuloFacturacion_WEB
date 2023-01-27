@@ -190,13 +190,12 @@
 
                                     <select class="selectpicker" data-style="btn-outline-info"
                                         aria-label="Default select example" name="selectProduct" id="producto"
-                                        onChange="onProductoElegido()" data-live-search="true">
-                                        <option selected="true" disabled="enabled">Seleccione un producto</option>
+                                        onChange="datosProducto()" data-live-search="true">
+                                        <option class="productos" selected="true" disabled="enabled">Seleccione un producto</option>
                                         @foreach (var item in ViewBag.ListaProductos)
                                         {
                                             <option class="productos" id="productoElegido" value="@(((Product)item).prod_id)">
-                                                @(((Product)item).prod_id) - @(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)
-                                                - @(((Product)item).prod_pvp) - @(((Product)item).prod_stock) - @(((Product)item).prod_iva)
+                                                @(((Product)item).prod_id) , @(((Product)item).prod_nombre) , @(((Product)item).prod_descripcion) , @(((Product)item).prod_pvp) , @(((Product)item).prod_stock) , @(((Product)item).prod_iva)
                                             </option>
                                         }
 
@@ -236,6 +235,13 @@
                                     <input class="form-control form-control-sm"
                                    id="txtprecio" name="txtprecio" style="width:80px" readonly value="--" />
                                 }
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">IVA</label>
+                                <input type="hidden" class="form-control form-control-sm" style="width:80px" id="txtstock" name="txtstock">
+                                <input type="text" class="form-control form-control-sm" style="width:80px" id="txtiva" name="txtiva">
                             </div>
                         </div>
                         <div class="col-sm-1">
@@ -424,6 +430,24 @@
             (document.getElementById("txtcedula")).value = ((resp.text).split(" -"))[0];
             (document.getElementById("txtnombre")).value = ((resp.text).split(" -"))[1];
             return ((resp.text).split(" -"))[0];
+        }
+
+        function datosProducto() {
+            var select = document.getElementById("producto");
+            var options = document.getElementsByClassName("productos");
+            var resp = options[select.selectedIndex];
+
+            (document.getElementById("txtproducto")).value = ((resp.text).split(" , "))[1];
+            (document.getElementById("txtprecio")).value = ((resp.text).split(" , "))[3];
+            (document.getElementById("txtstock")).value = ((resp.text).split(" , "))[4];
+
+            if (((resp.text).split(" , "))[5] == "True"){
+                (document.getElementById("txtiva")).value = "Si"
+            }else{
+                (document.getElementById("txtiva")).value = "No"
+            }
+            
+            return ((resp.text).split(" ,"))[0];
         }
     </script>
     <script>
