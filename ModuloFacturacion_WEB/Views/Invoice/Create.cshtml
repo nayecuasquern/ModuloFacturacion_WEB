@@ -512,6 +512,8 @@
 
     <script>
         var num = 0;
+        var subtotalFinal = 0;
+        var ivaTotal = 0;
         function AgregarConcepto() {
             let Cantidad = document.getElementById("txtcantidad").value;
             let Producto = datosProducto();
@@ -521,6 +523,8 @@
             var precio = $("#txtprecio").val().replace(/,/g, '.');
             var subtotal = parseFloat(precio) * parseFloat(Cantidad);
 
+            subtotalFinal = subtotal + subtotalFinal;
+
             var ivaText = (document.getElementById("txtiva")).value;
             var iva = 1.12;
 
@@ -528,6 +532,7 @@
 
                 var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad) * iva;
                 iva = parseFloat(precio) * parseFloat(Cantidad) * 0.12;
+                ivaTotal = iva + ivaTotal;
             } else {
                 var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad);
                 iva = 0;
@@ -596,9 +601,9 @@
             num++;
 
             function sd() {
-                (document.getElementById("tdsubtotal")).value = subtotal;
-                (document.getElementById("tdiva")).value = iva;
-                (document.getElementById("tdtotal")).value = subtotal + iva;
+                (document.getElementById("tdsubtotal")).value = subtotalFinal;
+                (document.getElementById("tdiva")).value = ivaTotal;
+                (document.getElementById("tdtotal")).value = subtotalFinal + ivaTotal;
             }
 
             sd();
