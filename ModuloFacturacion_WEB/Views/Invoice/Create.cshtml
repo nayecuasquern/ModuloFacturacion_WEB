@@ -45,21 +45,22 @@
                                 <label asp-for="InvoiceDate" class="control-label">Fecha</label>
                                 <input disabled id="fecha" class="form-control">
                                 <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+
+                                @ViewBag.Error
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row align-items-end">
-                            <div class="col-sm-4">
+                            <div class="col-sm-4" id="divSeleccionarCliente">
                                 <div class="mb-2">
                                     <label class="control-label">Seleccione el Cliente</label>
                                     <div class="search_select_box">
 
                                         <input type="hidden" id="mostrarDatosCliente" name="mostrarDatosCliente" />
                                         <input type="hidden" id="cedulaClienteElegido" name="cedulaClienteElegido" />
-
                                         
-                                        <select asp-for="CliIdentification" class="selectpicker" data-style="btn-outline-info"
+                                        <select class="selectpicker" data-style="btn-outline-info"
                                             aria-label="Default select example" name="selectClient" id="cliente"
                                             onChange="onClienteElegido()" data-live-search="true">
                                             <option selected="true" disabled="enabled">Seleccione el cliente</option>
@@ -72,7 +73,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4" id="divSeleccionarTipoPago" hidden="hidden">
                                 <div class="mb-2">
                                     <label class="control-label">Seleccione el tipo de pago</label>
                                     <select asp-for="TypId" class="selectpicker" data-style="btn-outline-info" aria-label="Default select example">
@@ -100,6 +101,7 @@
                                 {
                                     <input class="form-control form-control-sm"
                                    id="txtcedula" name="txtcedula" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliIdentification)" />
+
                                 }
                                 else
                                 {
@@ -178,117 +180,119 @@
                     <h6>
                         DETALLE DE VENTA
                     </h6>
-                    <div class="row align-items-end">
-                        <div class="col-sm-3">
-                            <div class="mb-2">
-                                <div class="search_select_box">
+                    <div id="divDetalleVenta" hidden="hidden">
+                        <div class="row align-items-end">
+                            <div class="col-sm-3">
+                                <div class="mb-2">
+                                    <div class="search_select_box">
 
-                                    <input type="hidden" id="mostrarDatosProducto" name="mostrarDatosProducto" />
-                                    <input type="hidden" id="idProductoElegido" name="idProductoElegido" />
-                                    <input type="hidden" id="textProducto" name="textProducto" value="@ViewBag.textProducto" />
-                                    <input type="hidden" id="ivaProd" name="ivaProd" value="@ViewBag.IVA" />
+                                        <input type="hidden" id="mostrarDatosProducto" name="mostrarDatosProducto" />
+                                        <input type="hidden" id="idProductoElegido" name="idProductoElegido" />
+                                        <input type="hidden" id="textProducto" name="textProducto" value="@ViewBag.textProducto" />
+                                        <input type="hidden" id="ivaProd" name="ivaProd" value="@ViewBag.IVA" />
 
-                                    <select class="selectpicker" data-style="btn-outline-info"
-                                        aria-label="Default select example" name="selectProduct" id="producto"
-                                        onChange="datosProducto()" data-live-search="true">
-                                        <option class="productos" selected="true" disabled="enabled">Seleccione un producto</option>
-                                        @foreach (var item in ViewBag.ListaProductos)
-                                        {
-                                            <option class="productos" id="productoElegido" value="@(((Product)item).prod_id)">
-                                                @(((Product)item).prod_id) , @(((Product)item).prod_nombre) , @(((Product)item).prod_descripcion) , @(((Product)item).prod_pvp) , @(((Product)item).prod_stock) , @(((Product)item).prod_iva)
-                                            </option>
-                                        }
+                                        <select class="selectpicker" data-style="btn-outline-info"
+                                            aria-label="Default select example" name="selectProduct" id="producto"
+                                            onChange="datosProducto()" data-live-search="true">
+                                            <option class="productos" selected="true" disabled="enabled">Seleccione un producto</option>
+                                            @foreach (var item in ViewBag.ListaProductos)
+                                            {
+                                                <option class="productos" id="productoElegido" value="@(((Product)item).prod_id)">
+                                                    @(((Product)item).prod_id) , @(((Product)item).prod_nombre) , @(((Product)item).prod_descripcion) , @(((Product)item).prod_pvp) , @(((Product)item).prod_stock) , @(((Product)item).prod_iva)
+                                                </option>
+                                            }
 
-                                    </select>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-2">
+                                    <label for="exampleInputEmail1" class="form-label">Producto</label>
+                                    @if (ViewBag.ProductoElegido != null)
+                                    {
+                                        <input class="form-control form-control-sm"
+                                       id="txtproducto" name="txtproducto" readonly
+                                       value="@(((Product)ViewBag.ProductoElegido).prod_id). @(((Product)ViewBag.ProductoElegido).prod_nombre)" />
+                                        <input type="hidden" value="@(((Product)ViewBag.ProductoElegido).prod_id)" id="Producto" />
+
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control form-control-sm"
+                                       id="txtproducto" name="txtproducto" readonly value="Producto no seleccionado" />
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-2">
+                                    <label for="exampleInputEmail1" class="form-label">Precio</label>
+                                    @if (ViewBag.ProductoElegido != null)
+                                    {
+                                        <input class="form-control form-control-sm"
+                                       id="txtprecio" name="txtprecio" style="width:80px" readonly value="@(((Product)ViewBag.ProductoElegido).prod_pvp)" />
+
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control form-control-sm"
+                                       id="txtprecio" name="txtprecio" style="width:80px" readonly value="--" />
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-2">
+                                    <label for="exampleInputEmail1" class="form-label">IVA</label>
+                                    <input type="hidden" class="form-control form-control-sm" style="width:80px" id="txtstock" name="txtstock">
+                                    <input type="text" class="form-control form-control-sm" style="width:80px" id="txtiva" name="txtiva" readonly value="--">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="mb-2">
+                                    <label for="exampleInputEmail1" class="form-label">Cantidad</label>
+                                    <input type="text" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <input type="button" class="btn btn-success mb-2 btn-sm" id="btnAgregar" value="Agregar" onclick="AgregarConcepto(); return false;" />
+                                <button type="submit" value="Create" class="btn btn-info mb-2 btn-sm" id="btnTerminar" onclick="terminar()">Terminar</button>
+                                <input type="hidden" id="terminarfactura" name="terminarfactura" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="divConceptos">
+                                    <table class="table table-bordered table-sm" id="tbProducto" style="width:100%">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col">Producto</th>
+                                                <th scope="col">Precio</th>
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col">IVA</th>
+                                                <th scope="col">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="row">
                             <div class="mb-2">
-                                <label for="exampleInputEmail1" class="form-label">Producto</label>
-                                @if (ViewBag.ProductoElegido != null)
-                                {
-                                    <input class="form-control form-control-sm"
-                                   id="txtproducto" name="txtproducto" readonly
-                                   value="@(((Product)ViewBag.ProductoElegido).prod_id). @(((Product)ViewBag.ProductoElegido).prod_nombre)" />
-                                   <input type="hidden" value="@(((Product)ViewBag.ProductoElegido).prod_id)" id="Producto"/> 
+                                <label>SUBTOTAL</label>
+                                <input type="number" asp-for="InvoiceSubtotal" class="form-control" id="tdsubtotal" readonly />
+                                <span asp-validation-for="InvoiceSubtotal" class="text-danger"></span>
 
-                                }
-                                else
-                                {
-                                    <input class="form-control form-control-sm"
-                                   id="txtproducto" name="txtproducto" readonly value="Producto no seleccionado" />
-                                }
+                                <label>IVA</label>
+                                <input type="number" asp-for="InvoiceIva" class="form-control" id="tdiva" readonly />
+                                <span asp-validation-for="InvoiceIva" class="text-danger"></span>
+
+                                <label>TOTAL</label>
+                                <input type ="number" asp-for="InvoiceTotal" class="form-control" id="tdtotal" readonly/>
+                                <span asp-validation-for="InvoiceTotal" class="text-danger"></span>
+
                             </div>
-                        </div>
-                        <div class="col-sm-1">
-                            <div class="mb-2">
-                                <label for="exampleInputEmail1" class="form-label">Precio</label>
-                                @if (ViewBag.ProductoElegido != null)
-                                {
-                                    <input class="form-control form-control-sm"
-                                   id="txtprecio" name="txtprecio" style="width:80px" readonly value="@(((Product)ViewBag.ProductoElegido).prod_pvp)" />
-
-                                }
-                                else
-                                {
-                                    <input class="form-control form-control-sm"
-                                   id="txtprecio" name="txtprecio" style="width:80px" readonly value="--" />
-                                }
-                            </div>
-                        </div>
-                        <div class="col-sm-1">
-                            <div class="mb-2">
-                                <label for="exampleInputEmail1" class="form-label">IVA</label>
-                                <input type="hidden" class="form-control form-control-sm" style="width:80px" id="txtstock" name="txtstock">
-                                <input type="text" class="form-control form-control-sm" style="width:80px" id="txtiva" name="txtiva">
-                            </div>
-                        </div>
-                        <div class="col-sm-1">
-                            <div class="mb-2">
-                                <label for="exampleInputEmail1" class="form-label">Cantidad</label>
-                                <input type="text" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <input type="button" class="btn btn-success mb-2 btn-sm" id="btnAgregar" value="Agregar" onclick="AgregarConcepto(); return false;" />
-                            <button type="submit" value="Create" class="btn btn-info mb-2 btn-sm" id="btnTerminar" onclick="terminar()">Terminar</button>
-                            <input type="hidden" id="terminarfactura" name="terminarfactura" />
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div id="divConceptos">
-                                <table class="table table-bordered table-sm" id="tbProducto" style="width:100%">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th scope="col">Producto</th>
-                                            <th scope="col">Precio</th>
-                                            <th scope="col">Cantidad</th>
-                                            <th scope="col">IVA</th>
-                                            <th scope="col">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-2">
-                            <label>SUBTOTAL</label>
-                            <input asp-for="InvoiceSubtotal" class="form-control" id="tdsubtotal" />
-                            <span asp-validation-for="InvoiceSubtotal" class="text-danger"></span>
-
-                            <label>IVA</label>
-                            <input asp-for="InvoiceIva" class="form-control" id="tdiva" />
-                            <span asp-validation-for="InvoiceIva" class="text-danger"></span>
-
-                            <label>TOTAL</label>
-                            <input asp-for="InvoiceTotal" class="form-control" id="tdtotal" />
-                            <span asp-validation-for="InvoiceTotal" class="text-danger"></span>
-
                         </div>
                     </div>
                 </div>
@@ -350,6 +354,8 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+
+
     <script>
 
         function onClienteElegido() {
@@ -360,11 +366,32 @@
             var options = document.getElementsByClassName("clientes");
             var resp = options[select.selectedIndex - 1];
 
-            cedulaClienteElegido.value = resp.value
-            console.log(cedulaClienteElegido.value)
+            cedulaClienteElegido.value = resp.value;
+
             document.forms[0].submit();
         }
     </script>
+
+    <script>
+        function documentoCargado(){
+            if (@ViewBag.BanderaDetalleVenta == true){
+                let element = document.getElementById("divDetalleVenta");        
+                let hidden = element.getAttribute("hidden");
+                element.removeAttribute("hidden");
+
+                let element2 = document.getElementById("divSeleccionarCliente");
+                let hidden2 = element2.getAttribute("hidden");
+                element2.setAttribute("hidden", "hidden");
+
+                let element3 = document.getElementById("divSeleccionarTipoPago");
+                let hidden3 = element3.getAttribute("hidden");
+                element3.removeAttribute("hidden");
+
+            }                
+        }
+        document.addEventListener("DOMContentLoaded", documentoCargado, false);
+    </script>
+
 
     <script>
         function terminar(){

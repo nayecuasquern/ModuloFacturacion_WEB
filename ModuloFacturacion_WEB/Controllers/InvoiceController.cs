@@ -46,9 +46,16 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
             ViewBag.textProducto = "" + formData["textProducto"];
+            ViewBag.BanderaDetalleVenta = "false";
 
             var cliente = new FactClient();
             cliente.CliIdentification = formData["txtcedula"];
+
+            if (formData["mostrarDatosCliente"] == "SI")
+            {
+                ViewBag.BanderaDetalleVenta = "true";
+            }
+
             cliente.CliName = formData["txtnombre"];
             cliente.CliMail = formData["txtcorreo"];
             cliente.CliAddres = formData["txtdireccion"];
@@ -78,11 +85,11 @@ namespace ModuloFacturacion_WEB.Controllers
                 
             }
 
-            if (formData["terminarfactura"] == "SI")
+            if (formData["terminarfactura"] == "SI" && model.FactInvoiceDetails!=null)
             {
-                model.FactInvoiceDetails = new List<FactInvoiceDetail>();
                 try
                 {
+                    model.CliIdentification = cliente.CliIdentification;
                     model.InvoiceDate = DateTime.Now;
                     int factID = APIConsumer.InsertFactInvoiceHead(apiUrl2, model);
 
@@ -93,15 +100,13 @@ namespace ModuloFacturacion_WEB.Controllers
                         details.ProductId = oC.ProductId;
                         details.InvoiceDetailSubtotal = oC.InvoiceDetailSubtotal;
                         details.InvoiceHeadId = factID;
+                        ViewBag.Error = details.InvoiceDetailAmount + details.ProductId + details.InvoiceDetailSubtotal + details.InvoiceHeadId;
                         APIConsumer.InsertFactInvoiceDetail(apiUrl4, details);
                     }
-
-
-                    return View();
+                    return RedirectToAction(nameof(Create));
                 }
                 catch (Exception ex)
-                {
-                    ViewBag.Error = ex.Message;
+                {           
                     return View();
                 }
             }
