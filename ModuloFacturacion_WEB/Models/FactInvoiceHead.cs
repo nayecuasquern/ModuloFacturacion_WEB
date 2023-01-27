@@ -18,7 +18,7 @@
 
         public virtual FactClient? CliIdentificationNavigation { get; set; }
 
-        public virtual ICollection<FactInvoiceDetail> FactInvoiceDetails { get; } = new List<FactInvoiceDetail>();
+        public List<FactInvoiceDetail>? FactInvoiceDetails { get; set; }
 
         public virtual FactPayType? Typ { get; set; }
     }

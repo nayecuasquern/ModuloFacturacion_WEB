@@ -13,6 +13,7 @@ namespace ModuloFacturacion_WEB.Controllers
         string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
         string apiUrl2 = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads";
         string apiUrl3 = "https://apisalida.azurewebsites.net/api/Productoes";
+        string apiUrl4 = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceDetails";
 
         public IActionResult Index(string? searchFor)
         {
@@ -22,7 +23,8 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaProductos = listaProductos();
 
 
-            return View(APIConsumer.InvoiceHead(apiUrl2));
+            //return View(APIConsumer.InvoiceHead(apiUrl2));
+            return View();
 
         }
 
@@ -38,7 +40,7 @@ namespace ModuloFacturacion_WEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(IFormCollection formData)
+        public IActionResult Create(FactInvoiceHead model, IFormCollection formData)
         {
             ViewBag.ListaClientes = listaClientes();
             ViewBag.ListaTipoPago = listaTipoPago();
@@ -54,8 +56,8 @@ namespace ModuloFacturacion_WEB.Controllers
                 cliente.TypId = 1;
             else
                 cliente.TypId = int.Parse(formData["txttipo"]);
-
             ViewBag.ClienteElegido = cliente;
+
 
             if (formData["mostrarDatosCliente"] == "SI")
             {
@@ -75,7 +77,37 @@ namespace ModuloFacturacion_WEB.Controllers
                 }
                 
             }
+
+            if (formData["terminarfactura"] == "SI")
+            {
+                model.FactInvoiceDetails = new List<FactInvoiceDetail>();
+                try
+                {
+                    model.InvoiceDate = DateTime.Now;
+                    int factID = APIConsumer.InsertFactInvoiceHead(apiUrl2, model);
+
+                    foreach (var oC in model.FactInvoiceDetails)
+                    {
+                        FactInvoiceDetail details = new FactInvoiceDetail();
+                        details.InvoiceDetailAmount = oC.InvoiceDetailAmount;
+                        details.ProductId = oC.ProductId;
+                        details.InvoiceDetailSubtotal = oC.InvoiceDetailSubtotal;
+                        details.InvoiceHeadId = factID;
+                        APIConsumer.InsertFactInvoiceDetail(apiUrl4, details);
+                    }
+
+
+                    return View();
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = ex.Message;
+                    return View();
+                }
+            }
+
             return View();
+
         }
 
         private List<Product> listaProductos()
@@ -85,7 +117,10 @@ namespace ModuloFacturacion_WEB.Controllers
             {
                 prod_id = f.prod_id.ToString(),
                 prod_nombre = f.prod_nombre,
-                prod_descripcion = f.prod_descripcion
+                prod_descripcion = f.prod_descripcion,
+                prod_pvp = f.prod_pvp,
+                prod_stock = f.prod_stock,
+                prod_iva = f.prod_iva
             })
             .ToList();
             return lista;
@@ -123,6 +158,41 @@ namespace ModuloFacturacion_WEB.Controllers
         {
             var datos = APIConsumer.InvoiceHead(apiUrl2);
             return Json(new { data = datos });
+        }
+
+        [HttpPost]
+        public ActionResult Add(FactInvoiceHead model, IFormCollection formData)
+        {
+
+            model.FactInvoiceDetails = new List<FactInvoiceDetail>();
+            try
+            {
+                model.InvoiceDate = DateTime.Now;
+                int factID = APIConsumer.InsertFactInvoiceHead(apiUrl2, model);
+                
+                foreach (var oC in model.FactInvoiceDetails)
+                {
+                    FactInvoiceDetail details = new FactInvoiceDetail();
+                    details.InvoiceDetailAmount = oC.InvoiceDetailAmount;
+                    details.ProductId = oC.ProductId;
+                    details.InvoiceDetailSubtotal = oC.InvoiceDetailSubtotal;
+                    details.InvoiceHeadId = factID;
+                    APIConsumer.InsertFactInvoiceDetail(apiUrl4, details);
+                }
+
+
+                return RedirectToAction(nameof(Create));
+            }
+            catch(Exception ex)
+            {
+                ViewBag.Error = ex.Message;  
+                return View();
+            }
+        }
+
+        public IActionResult Add()
+        {
+            return View();
         }
 
 

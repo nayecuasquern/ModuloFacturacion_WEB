@@ -1,34 +1,29 @@
 ﻿@model ModuloFacturacion_WEB.Models.FactInvoiceHead
-@using ModuloFacturacion_WEB.Models
 
-@{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    @*    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />*@
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    @*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+@using (Html.BeginForm("Create","Invoice",FormMethod.Post))
+{
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />*@
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        @*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
-    <div class="card">
-        <div class="card-header">
-            <h2>
-                FACTURACIÓN
-            </h2>
-        </div>
-        @*        <form method="post" asp-controller="Invoice" asp-action="PDFFact">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+
+    <body>
+        <div class="card">
+            <div class="card-header">
+                <h2>
+                    FACTURACIÓN
+                </h2>
+            </div>
+            @*        <form method="post" asp-controller="Invoice" asp-action="PDFFact">
         <button type="submit" class="btn btn-danger" value="Generate PDF">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
         <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
@@ -37,271 +32,312 @@
         </button>
         </form>*@
 
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="card-body">
-                <div class="row align-items-end">
-                    <div class="col-sm-4">
-                        <div class="mb-2">
-                            <input asp-for="InvoiceHeadId" type="hidden" class="form-control" value="0" />
-                            <span asp-validation-for="InvoiceHeadId" class="text-danger"></span>
-
-                            <label asp-for="InvoiceDate" class="control-label">Fecha</label>
-                            <input disabled id="fecha" class="form-control">
-                            <span asp-validation-for="InvoiceDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
+                <div class="card-body">
                     <div class="row align-items-end">
                         <div class="col-sm-4">
                             <div class="mb-2">
-                                <div class="search_select_box">
+                                <input asp-for="InvoiceHeadId" type="hidden" class="form-control" value="0" />
+                                <span asp-validation-for="InvoiceHeadId" class="text-danger"></span>
 
-                                    <input type="hidden" id="mostrarDatosCliente" name="mostrarDatosCliente" />
-                                    <input type="hidden" id="cedulaClienteElegido" name="cedulaClienteElegido" />
-
+                                <label asp-for="InvoiceDate" class="control-label">Fecha</label>
+                                <input disabled id="fecha" class="form-control">
+                                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row align-items-end">
+                            <div class="col-sm-4">
+                                <div class="mb-2">
                                     <label class="control-label">Seleccione el Cliente</label>
-                                    <select asp-for="CliIdentification" class="selectpicker" data-style="btn-outline-info"
+                                    <div class="search_select_box">
+
+                                        <input type="hidden" id="mostrarDatosCliente" name="mostrarDatosCliente" />
+                                        <input type="hidden" id="cedulaClienteElegido" name="cedulaClienteElegido" />
+
+                                        
+                                        <select asp-for="CliIdentification" class="selectpicker" data-style="btn-outline-info"
                                             aria-label="Default select example" name="selectClient" id="cliente"
                                             onChange="onClienteElegido()" data-live-search="true">
-                                        <option selected="true" disabled="enabled">Seleccione el cliente</option>
-                                        @foreach (var item in ViewBag.ListaClientes)
+                                            <option selected="true" disabled="enabled">Seleccione el cliente</option>
+                                            @foreach (var item in ViewBag.ListaClientes)
+                                            {
+                                                <option class="clientes" id="clienteElegido" value="@(((FactClient)item).CliIdentification)">@(((FactClient)item).CliIdentification) - @(((FactClient)item).CliName)</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="CliIdentification" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-2">
+                                    <label class="control-label">Seleccione el tipo de pago</label>
+                                    <select asp-for="TypId" class="selectpicker" data-style="btn-outline-info" aria-label="Default select example">
+                                        @foreach (var item in ViewBag.ListaTipoPago)
                                         {
-                                            <option class="clientes" id="clienteElegido" value="@(((FactClient)item).CliIdentification)">@(((FactClient)item).CliIdentification) - @(((FactClient)item).CliName)</option>
+                                            <option value="@(((FactPayType)item).TypId)" class="pagos">@(((FactPayType)item).TypId). @(((FactPayType)item).Typ)</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="CliIdentification" class="text-danger"></span>
+                                    <span asp-validation-for="TypId" class="text-danger"></span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <h6>
+                        DATOS CLIENTE
+                    </h6>
+
+                    <div class="row align-items-end">
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Cédula</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txtcedula" name="txtcedula" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliIdentification)" />
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txtcedula" name="txtcedula" readonly value="Cliente no seleccionado" />
+                                }
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="mb-2">
-                                <label class="control-label">Seleccione el tipo de pago</label>
-                                <select asp-for="TypId" class="selectpicker" data-style="btn-outline-info" aria-label="Default select example">
-                                    @foreach (var item in ViewBag.ListaTipoPago)
-                                    {
-                                        <option value="@(((FactPayType)item).TypId)" class="pagos">@(((FactPayType)item).TypId). @(((FactPayType)item).Typ)</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="TypId" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-
-                <h6>
-                    DATOS CLIENTE
-                </h6>
-
-                <div class="row align-items-end">
-                    <div class="col-sm-4">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Cédula</label>
-                            @if (ViewBag.ClienteElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
-                                   id="txtcedula" name="txtcedula" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliIdentification)" />
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
-                                   id="txtcedula" name="txtcedula" readonly value="Cliente no seleccionado" />
-                            }
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Tipo Cliente</label>
-                            @if (ViewBag.ClienteElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
+                                <label for="exampleInputEmail1" class="form-label">Tipo Cliente</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txttipo" name="txttipo" readonly value="@(((FactClient)ViewBag.ClienteElegido).TypId)" />
 
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txttipo" name="txttipo" readonly value="Cliente no seleccionado" />
-                            }
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                            @if (ViewBag.ClienteElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txtnombre" name="txtnombre" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliName)" />
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txtnombre" name="txtnombre" readonly value="Cliente no seleccionado" />
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row align-items-end">
-                    <div class="col-sm-4">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Dirección</label>
-                            @if (ViewBag.ClienteElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
-                                   id="txtdireccion" name="txtdireccion" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliAddres)" />
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
-                                   id="txtdireccion" name="txtdireccion" readonly value="Cliente no seleccionado" />
-                            }
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Correo</label>
-                            @if (ViewBag.ClienteElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
-                                   id="txtcorreo" name="txtcorreo" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliMail)" />
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
-                                   id="txtcorreo" name="txtcorreo" readonly value="Cliente no seleccionado" />
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-                <h6>
-                    DETALLE DE VENTA
-                </h6>
-                <div class="row align-items-end">
-                    <div class="col-sm-3">
-                        <div class="mb-2">
-                            <div class="search_select_box">
-
-                                <input type="hidden" id="mostrarDatosProducto" name="mostrarDatosProducto" />
-                                <input type="hidden" id="idProductoElegido" name="idProductoElegido" />
-                                <input type="hidden" id="textProducto" name="textProducto" value="@ViewBag.textProducto" />
-                                <input type="hidden" id="ivaProd" name="ivaProd" value="@ViewBag.IVA" />
-
-                                <select class="selectpicker" data-style="btn-outline-secondary"
-                                        aria-label="Default select example" name="selectProduct" id="producto"
-                                        onChange="onProductoElegido()" data-live-search="true">
-                                    <option selected="true" disabled="enabled">Seleccione un producto</option>
-                                    @foreach (var item in ViewBag.ListaProductos)
-                                    {
-                                        <option class="productos" id="productoElegido" value="@(((Product)item).prod_id)">
-                                            @(((Product)item).prod_id). @(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)
-                                        </option>
-                                    }
-
-                                </select>
+                                }
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Producto</label>
-                            @if (ViewBag.ProductoElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
+
+                    <div class="row align-items-end">
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Dirección</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txtdireccion" name="txtdireccion" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliAddres)" />
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txtdireccion" name="txtdireccion" readonly value="Cliente no seleccionado" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Correo</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txtcorreo" name="txtcorreo" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliMail)" />
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txtcorreo" name="txtcorreo" readonly value="Cliente no seleccionado" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h6>
+                        DETALLE DE VENTA
+                    </h6>
+                    <div class="row align-items-end">
+                        <div class="col-sm-3">
+                            <div class="mb-2">
+                                <div class="search_select_box">
+
+                                    <input type="hidden" id="mostrarDatosProducto" name="mostrarDatosProducto" />
+                                    <input type="hidden" id="idProductoElegido" name="idProductoElegido" />
+                                    <input type="hidden" id="textProducto" name="textProducto" value="@ViewBag.textProducto" />
+                                    <input type="hidden" id="ivaProd" name="ivaProd" value="@ViewBag.IVA" />
+
+                                    <select class="selectpicker" data-style="btn-outline-info"
+                                        aria-label="Default select example" name="selectProduct" id="producto"
+                                        onChange="onProductoElegido()" data-live-search="true">
+                                        <option selected="true" disabled="enabled">Seleccione un producto</option>
+                                        @foreach (var item in ViewBag.ListaProductos)
+                                        {
+                                            <option class="productos" id="productoElegido" value="@(((Product)item).prod_id)">
+                                                @(((Product)item).prod_id) - @(((Product)item).prod_nombre) - @(((Product)item).prod_descripcion)
+                                                - @(((Product)item).prod_pvp) - @(((Product)item).prod_stock) - @(((Product)item).prod_iva)
+                                            </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Producto</label>
+                                @if (ViewBag.ProductoElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txtproducto" name="txtproducto" readonly
                                    value="@(((Product)ViewBag.ProductoElegido).prod_id). @(((Product)ViewBag.ProductoElegido).prod_nombre)" />
+                                   <input type="hidden" value="@(((Product)ViewBag.ProductoElegido).prod_id)" id="Producto"/> 
 
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txtproducto" name="txtproducto" readonly value="Producto no seleccionado" />
-                            }
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Precio</label>
-                            @if (ViewBag.ProductoElegido != null)
-                            {
-                                <input class="form-control form-control-sm"
+                        <div class="col-sm-1">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Precio</label>
+                                @if (ViewBag.ProductoElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txtprecio" name="txtprecio" style="width:80px" readonly value="@(((Product)ViewBag.ProductoElegido).prod_pvp)" />
 
-                            }
-                            else
-                            {
-                                <input class="form-control form-control-sm"
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
                                    id="txtprecio" name="txtprecio" style="width:80px" readonly value="--" />
-                            }
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Cantidad</label>
+                                <input type="text" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <input type="button" class="btn btn-success mb-2 btn-sm" id="btnAgregar" value="Agregar" onclick="AgregarConcepto(); return false;" />
+                            <button type="submit" value="Create" class="btn btn-info mb-2 btn-sm" id="btnTerminar" onclick="terminar()">Terminar</button>
+                            <input type="hidden" id="terminarfactura" name="terminarfactura" />
                         </div>
                     </div>
-                    <div class="col-sm-1">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="divConceptos">
+                                <table class="table table-bordered table-sm" id="tbProducto" style="width:100%">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">Producto</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">IVA</th>
+                                            <th scope="col">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="mb-2">
-                            <label for="exampleInputEmail1" class="form-label">Cantidad</label>
-                            <input type="text" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
+                            <label>SUBTOTAL</label>
+                            <input asp-for="InvoiceSubtotal" class="form-control" id="tdsubtotal" />
+                            <span asp-validation-for="InvoiceSubtotal" class="text-danger"></span>
+
+                            <label>IVA</label>
+                            <input asp-for="InvoiceIva" class="form-control" id="tdiva" />
+                            <span asp-validation-for="InvoiceIva" class="text-danger"></span>
+
+                            <label>TOTAL</label>
+                            <input asp-for="InvoiceTotal" class="form-control" id="tdtotal" />
+                            <span asp-validation-for="InvoiceTotal" class="text-danger"></span>
+
                         </div>
                     </div>
-
-                    <div class="col-sm-3">
-                        <input type="button" class="btn btn-success mb-2 btn-sm" id="btnAgregar" value="Agregar" />
-                        <button type="submit" value="Create" class="btn btn-info mb-2 btn-sm" id="btnTerminar">Terminar</button>
-                    </div>
                 </div>
+            </form>
+        </div>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered table-sm" id="tbProducto">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">Producto</th>
-                                    <th scope="col">Precio</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">IVA</th>
-                                    <th scope="col">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
 
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-2">
-                        <label>SUBTOTAL</label>
-                        <input asp-for="InvoiceSubtotal" class="form-control" id="tdsubtotal" />
-                        <span asp-validation-for="InvoiceSubtotal" class="text-danger"></span>
 
-                        <label>IVA</label>
-                        <input asp-for="InvoiceIva" class="form-control" id="tdiva" />
-                        <span asp-validation-for="InvoiceIva" class="text-danger"></span>
 
-                        <label>TOTAL</label>
-                        <input asp-for="InvoiceTotal" class="form-control" id="tdtotal" />
-                        <span asp-validation-for="InvoiceTotal" class="text-danger"></span>
+        <br />
+        <br />
+        <br />
 
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+        <script src="js/script.js"></script>
+    </body>
 
-    <br />
-    <br />
-    <br />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="js/script.js"></script>
-</body>
-</html>
+
+@*    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(d => d.CliIdentification)
+            @Html.TextBoxFor(d => d.CliIdentification)
+        </div>
+    </div>*@
+
+@*    <div class="row">
+        <div class="form-group">
+            Cantidad
+            <input type="number" id="Cantidad"/>
+            Producto
+            <input type="number" id="Producto" />
+            Subtotal
+            <input type="number" id="Subtotal" />
+            <input value="Agregar" type="button" onclick="AgregarConcepto(); return false;"/>
+        </div>
+        <div id="divConceptos">
+            <table id="tablaConceptos" style="width:100%">
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Producto</th>
+                    <th>Subtotal</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-group">
+            @ViewBag.Error
+            <input type="submit"/>
+        </div>
+    </div>*@
+}
 
 @section Scripts {
     @{
@@ -322,6 +358,13 @@
             console.log(cedulaClienteElegido.value)
             document.forms[0].submit();
         }
+    </script>
+
+    <script>
+        function terminar(){
+            terminarfactura.value = "SI";
+        }
+
     </script>
 
     <script>
@@ -346,7 +389,7 @@
 
         function getClient() {
             var lista = @((List<FactClient>)ViewBag.ListaClientes)
-                            var select = document.getElementById("cliente");
+                                    var select = document.getElementById("cliente");
             (document.getElementById("txtcedula")).value = lista.valueOf()
 
         }
@@ -391,7 +434,7 @@
 
     </script>
 
-    <script>
+@*    <script>
         var total;
         $("#btnAgregar").on("click", function () {
             var precio = $("#txtprecio").val().replace(/,/g, '.');
@@ -443,5 +486,101 @@
             sd();
 
         })
+    </script>*@
+
+    <script>
+        var num = 0;
+        function AgregarConcepto() {
+            let Cantidad = document.getElementById("txtcantidad").value;
+            let Producto = document.getElementById("Producto").value;
+            //let Subtotal = document.getElementById("Subtotal").value;
+
+            var precio = $("#txtprecio").val().replace(/,/g, '.');
+            var subtotal = parseFloat(precio) * parseFloat(Cantidad);
+
+            var ivaText = (document.getElementById("ivaProd")).value;
+            var iva = 1.12;
+
+            if (ivaText == "SI") {
+
+                var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad) * iva;
+                iva = parseFloat(precio) * parseFloat(Cantidad) * 0.12;
+            } else {
+                var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad);
+                iva = 0;
+            }
+
+            //agregar tabla
+            let Tabla = document.getElementById("tbProducto");
+            let TR = document.createElement("tr");
+
+            let TDCantidad = document.createElement("td");
+            let TDProducto = document.createElement("td");
+            let TDSubtotal = document.createElement("td");
+            let TDIva = document.createElement("td");
+            let TDPrecio = document.createElement("td");
+
+            TR.appendChild(TDProducto);
+            TR.appendChild(TDPrecio)
+            TR.appendChild(TDCantidad);
+            TR.appendChild(TDIva);
+            TR.appendChild(TDSubtotal);
+
+            TDProducto.innerHTML = Producto;
+            TDPrecio.innerHTML = precio;
+            TDCantidad.innerHTML = Cantidad;
+            TDIva.innerHTML = ivaText;
+            TDSubtotal.innerHTML = subtotalIVA;
+
+            Tabla.appendChild(TR);
+
+            //agregar hiddens
+            let DivConceptos = document.getElementById("divConceptos");
+
+            let HiddenIndex = document.createElement("input");
+            let HiddenProducto = document.createElement("input");
+            let HiddenPrecio = document.createElement("input");
+            let HiddenCantidad = document.createElement("input");
+            let HiddenIva = document.createElement("input");
+            let HiddenSubtotal = document.createElement("input");
+
+            HiddenIndex.name = "conceptos.Index";
+            HiddenIndex.value = num;
+            HiddenIndex.type = "hidden";
+
+            HiddenProducto.name = "FactInvoiceDetails[" + num + "].ProductId";
+            HiddenProducto.value = Producto;
+            HiddenProducto.type = "hidden";
+
+            HiddenCantidad.name = "FactInvoiceDetails[" + num + "].InvoiceDetailAmount";
+            HiddenCantidad.value = Cantidad;
+            HiddenCantidad.type = "hidden";
+
+            HiddenSubtotal.name = "FactInvoiceDetails[" + num + "].InvoiceDetailSubtotal";
+            HiddenSubtotal.value = subtotalIVA;
+            HiddenSubtotal.type = "hidden";
+
+            DivConceptos.appendChild(HiddenIndex);
+            DivConceptos.appendChild(HiddenCantidad);
+            DivConceptos.appendChild(HiddenProducto);
+            DivConceptos.appendChild(HiddenSubtotal);
+
+            document.getElementById("txtcantidad").value = "";
+            document.getElementById("txtproducto").value = "Producto no seleccionado";
+            document.getElementById("txtprecio").value = "--";
+
+            num++;
+
+            function sd() {
+                (document.getElementById("tdsubtotal")).value = subtotal;
+                (document.getElementById("tdiva")).value = iva;
+                (document.getElementById("tdtotal")).value = subtotal + iva;
+            }
+
+            sd();
+        }
     </script>
 }
+
+
+
