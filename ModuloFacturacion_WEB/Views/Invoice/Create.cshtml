@@ -621,108 +621,100 @@
         });
 
         function AgregarConcepto() {
-            let Cantidad = document.getElementById("txtcantidad").value;
-            let Producto = datosProducto();
-            console.log(Cantidad + Producto)
-            //let Subtotal = document.getElementById("Subtotal").value;
-
-            var precio = $("#txtprecio").val().replace(/,/g, '.');
-            var subtotal = parseFloat(precio) * parseFloat(Cantidad);
-
-            subtotalFinal = subtotal + subtotalFinal;
-
-            var ivaText = (document.getElementById("txtiva")).value;
-            var iva = 1.12;
-
-            if (ivaText == "SI") {
-
-                var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad) * iva;
-                iva = parseFloat(precio) * parseFloat(Cantidad) * 0.12;
-                ivaTotal = iva + ivaTotal;
-            } else {
-                var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad);
-                iva = 0;
+            if (document.getElementById("txtproducto").value == "Producto no seleccionado"){
+                alert("Producto no seleccionado")
+                return;
             }
 
-            //agregar tabla
-            let Tabla = document.getElementById("tbProducto");
-            let TR = document.createElement("tr");
+                let Tabla = document.getElementById("tbProducto");
+                let Producto = datosProducto();
+                let Cantidad = document.getElementById("txtcantidad").value;
+                var vali = true
+                var posicionFila
+                for (var i = 0, row; row = Tabla.rows[i]; i++) {
+                    var dato = (row.cells[0].innerHTML);
+                    if(dato == Producto){
+                        vali = false
+                        posicionFila = i
+                        alert(Tabla.rows[posicionFila].cells[2].innerHTML)
+                        break;
+                    }
+                }
 
-            let TDCantidad = document.createElement("td");
-            let TDProducto = document.createElement("td");
-            let TDSubtotal = document.createElement("td");
-            let TDIva = document.createElement("td");
-            let TDPrecio = document.createElement("td");
-            let TDOpcion = document.createElement("input");
+                var precio = $("#txtprecio").val().replace(/,/g, '.');
+                var subtotal = parseFloat(precio) * parseFloat(Cantidad);
 
-            TDOpcion.type = "button";
-            TDOpcion.className = "borrar btn-danger";
-            TDOpcion.value = "Eliminar";
+                subtotalFinal = subtotal + subtotalFinal;
 
-            TR.appendChild(TDProducto);
-            TR.appendChild(TDPrecio)
-            TR.appendChild(TDCantidad);
-            TR.appendChild(TDIva);
-            TR.appendChild(TDSubtotal);
-            TR.appendChild(TDOpcion);
+                var ivaText = (document.getElementById("txtiva")).value;
+                var iva = 1.12;
 
-            TDProducto.innerHTML = Producto;
-            TDPrecio.innerHTML = precio;
-            TDCantidad.innerHTML = Cantidad;
-            TDIva.innerHTML = ivaText;
-            TDSubtotal.innerHTML = subtotalIVA;
+                if (ivaText == "SI") {
 
-            Tabla.appendChild(TR);
+                    var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad) * iva;
+                    iva = parseFloat(precio) * parseFloat(Cantidad) * 0.12;
+                    ivaTotal = iva + ivaTotal;
+                } else {
+                    var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad);
+                    iva = 0;
+                }
 
-            ////agregar hiddens
-            //let DivConceptos = document.getElementById("divConceptos");
+                if(!vali){
+                    alert("Entra")
+                    Tabla.rows[posicionFila].cells[2].innerHTML = parseInt(Cantidad) + parseInt(Tabla.rows[posicionFila].cells[2].innerHTML);
+                    Tabla.rows[posicionFila].cells[4].innerHTML = parseInt(subtotalIVA) + parseInt(Tabla.rows[posicionFila].cells[4].innerHTML);
 
-            //let HiddenIndex = document.createElement("input");
-            //let HiddenProducto = document.createElement("input");
-            //let HiddenPrecio = document.createElement("input");
-            //let HiddenCantidad = document.createElement("input");
-            //let HiddenIva = document.createElement("input");
-            //let HiddenSubtotal = document.createElement("input");
+                    sd();
+                    limpiarCam()
+                    return;    
+                }
+                                              
+                //agregar tabla
+                
 
-            //HiddenIndex.name = "conceptos.Index";
-            //HiddenIndex.id = num;
-            //HiddenIndex.value = num;
-            //HiddenIndex.type = "hidden";
+                let TR = document.createElement("tr");
 
-            //HiddenProducto.name = "FactInvoiceDetails[" + num + "].ProductId";
-            //HiddenProducto.id = num;
-            //HiddenProducto.value = Producto;
-            //HiddenProducto.type = "hidden";
+                let TDCantidad = document.createElement("td");
+                let TDProducto = document.createElement("td");
+                let TDSubtotal = document.createElement("td");
+                let TDIva = document.createElement("td");
+                let TDPrecio = document.createElement("td");
+                let TDOpcion = document.createElement("input");
 
-            //HiddenCantidad.name = "FactInvoiceDetails[" + num + "].InvoiceDetailAmount";
-            //HiddenCantidad.id = num;
-            //HiddenCantidad.value = Cantidad;
-            //HiddenCantidad.type = "hidden";
+                TDOpcion.type = "button";
+                TDOpcion.className = "borrar btn-danger";
+                TDOpcion.value = "Eliminar";
 
-            //HiddenSubtotal.name = "FactInvoiceDetails[" + num + "].InvoiceDetailSubtotal";
-            //HiddenSubtotal.id = num;
-            //HiddenSubtotal.value = subtotalIVA;
-            //HiddenSubtotal.type = "hidden";
+                TR.appendChild(TDProducto);
+                TR.appendChild(TDPrecio)
+                TR.appendChild(TDCantidad);
+                TR.appendChild(TDIva);
+                TR.appendChild(TDSubtotal);
+                TR.appendChild(TDOpcion);
 
-            //DivConceptos.appendChild(HiddenIndex);
-            //DivConceptos.appendChild(HiddenCantidad);
-            //DivConceptos.appendChild(HiddenProducto);
-            //DivConceptos.appendChild(HiddenSubtotal);
+                TDProducto.innerHTML = Producto;
+                TDPrecio.innerHTML = precio;
+                TDCantidad.innerHTML = Cantidad;
+                TDIva.innerHTML = ivaText;
+                TDSubtotal.innerHTML = subtotalIVA;
 
-            document.getElementById("txtcantidad").value = "";
-            document.getElementById("txtproducto").value = "Producto no seleccionado";
-            document.getElementById("txtprecio").value = "--";
-            document.getElementById("txtiva").value = "--";
+                Tabla.appendChild(TR);                            
+                num++;
+                limpiarCam()
+                sd();
 
-            num++;
-
-            function sd() {
-                (document.getElementById("tdsubtotal")).value = subtotalFinal;
-                (document.getElementById("tdiva")).value = ivaTotal;
-                (document.getElementById("tdtotal")).value = subtotalFinal + ivaTotal;
-            }
-
-            sd();
+                function sd() {
+                    (document.getElementById("tdsubtotal")).value = subtotalFinal;
+                    (document.getElementById("tdiva")).value = ivaTotal;
+                    (document.getElementById("tdtotal")).value = subtotalFinal + ivaTotal;
+                }
+                function limpiarCam() {
+                    document.getElementById("txtcantidad").value = "";
+                    document.getElementById("txtproducto").value = "Producto no seleccionado";
+                    document.getElementById("txtprecio").value = "--";
+                    document.getElementById("txtiva").value = "--";
+                }                
+            
         }
     </script>
 }
