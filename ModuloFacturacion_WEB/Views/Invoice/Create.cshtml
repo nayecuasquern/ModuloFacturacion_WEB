@@ -264,15 +264,39 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div id="divConceptos">
-                                    <table class="table table-bordered table-sm" id="tbProducto" style="width:100%">
+                                    <table class="table table-bordered table-sm" style="width:100%">
                                         <thead class="table-dark">
-                                            <tr>
+                                            <colgroup>
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                 
+                                            </colgroup>
+                                            <tr class="table-primary">
                                                 <th scope="col">Producto</th>
                                                 <th scope="col">Precio</th>
                                                 <th scope="col">Cantidad</th>
                                                 <th scope="col">IVA</th>
                                                 <th scope="col">Subtotal</th>
+                                                <th scope="col">Opción</th>
                                             </tr>
+                                        </thead>
+                                    </table>
+                                    <table class="table table-bordered table-sm" id="tbProducto" style="width:100%">
+                                        <thead class="table-dark">
+                                            <colgroup>
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+                                                <col width="20%">
+
+                                            </colgroup>
+
                                         </thead>
                                     </table>
                                 </div>
@@ -395,6 +419,48 @@
 
     <script>
         function terminar(){
+
+            var tabla = document.getElementById("tbProducto");
+
+            for (var i = 0; i < tabla.rows.length; i++) {
+                    alert(i)
+                    let DivConceptos = document.getElementById("divConceptos");
+
+                    let HiddenIndex = document.createElement("input");
+                    let HiddenProducto = document.createElement("input");
+                    let HiddenPrecio = document.createElement("input");
+                    let HiddenCantidad = document.createElement("input");
+                    let HiddenIva = document.createElement("input");
+                    let HiddenSubtotal = document.createElement("input");
+
+                    HiddenIndex.name = "conceptos.Index";
+                    HiddenIndex.value = i;
+                    console.log(HiddenIndex.value)
+                    HiddenIndex.type = "hidden";
+
+                    for (var j = 0; j < tabla.rows[i].cells.length; j++) {
+                        if (j == 0) {
+                            HiddenProducto.name = "FactInvoiceDetails[" + i + "].ProductId";
+                            HiddenProducto.value = tabla.rows[i].cells[j].innerHTML;
+                            HiddenProducto.type = "hidden";
+                        }
+                        if (j == 2) {
+                            HiddenCantidad.name = "FactInvoiceDetails[" + i + "].InvoiceDetailAmount";
+                            HiddenCantidad.value = tabla.rows[i].cells[j].innerHTML;
+                            HiddenCantidad.type = "hidden";
+                        }
+                        if (j == 4) {
+                            HiddenSubtotal.name = "FactInvoiceDetails[" + i + "].InvoiceDetailSubtotal";
+                            HiddenSubtotal.value = tabla.rows[i].cells[j].innerHTML;
+                            HiddenSubtotal.type = "hidden";
+                        }
+                    }
+
+                    DivConceptos.appendChild(HiddenIndex);
+                    DivConceptos.appendChild(HiddenCantidad);
+                    DivConceptos.appendChild(HiddenProducto);
+                    DivConceptos.appendChild(HiddenSubtotal);                  
+            }
             terminarfactura.value = "SI";
         }
 
@@ -538,9 +604,22 @@
     </script>*@
 
     <script>
+
+    </script>
+
+    <script>
         var num = 0;
         var subtotalFinal = 0;
         var ivaTotal = 0;
+
+
+        $(document).on('click', '.borrar', function (event) {
+            event.preventDefault();
+            $(this).closest('tr').remove();
+            //document.getElementById(num + "").remove();
+            
+        });
+
         function AgregarConcepto() {
             let Cantidad = document.getElementById("txtcantidad").value;
             let Producto = datosProducto();
@@ -574,12 +653,18 @@
             let TDSubtotal = document.createElement("td");
             let TDIva = document.createElement("td");
             let TDPrecio = document.createElement("td");
+            let TDOpcion = document.createElement("input");
+
+            TDOpcion.type = "button";
+            TDOpcion.className = "borrar btn-danger";
+            TDOpcion.value = "Eliminar";
 
             TR.appendChild(TDProducto);
             TR.appendChild(TDPrecio)
             TR.appendChild(TDCantidad);
             TR.appendChild(TDIva);
             TR.appendChild(TDSubtotal);
+            TR.appendChild(TDOpcion);
 
             TDProducto.innerHTML = Producto;
             TDPrecio.innerHTML = precio;
@@ -589,36 +674,40 @@
 
             Tabla.appendChild(TR);
 
-            //agregar hiddens
-            let DivConceptos = document.getElementById("divConceptos");
+            ////agregar hiddens
+            //let DivConceptos = document.getElementById("divConceptos");
 
-            let HiddenIndex = document.createElement("input");
-            let HiddenProducto = document.createElement("input");
-            let HiddenPrecio = document.createElement("input");
-            let HiddenCantidad = document.createElement("input");
-            let HiddenIva = document.createElement("input");
-            let HiddenSubtotal = document.createElement("input");
+            //let HiddenIndex = document.createElement("input");
+            //let HiddenProducto = document.createElement("input");
+            //let HiddenPrecio = document.createElement("input");
+            //let HiddenCantidad = document.createElement("input");
+            //let HiddenIva = document.createElement("input");
+            //let HiddenSubtotal = document.createElement("input");
 
-            HiddenIndex.name = "conceptos.Index";
-            HiddenIndex.value = num;
-            HiddenIndex.type = "hidden";
+            //HiddenIndex.name = "conceptos.Index";
+            //HiddenIndex.id = num;
+            //HiddenIndex.value = num;
+            //HiddenIndex.type = "hidden";
 
-            HiddenProducto.name = "FactInvoiceDetails[" + num + "].ProductId";
-            HiddenProducto.value = Producto;
-            HiddenProducto.type = "hidden";
+            //HiddenProducto.name = "FactInvoiceDetails[" + num + "].ProductId";
+            //HiddenProducto.id = num;
+            //HiddenProducto.value = Producto;
+            //HiddenProducto.type = "hidden";
 
-            HiddenCantidad.name = "FactInvoiceDetails[" + num + "].InvoiceDetailAmount";
-            HiddenCantidad.value = Cantidad;
-            HiddenCantidad.type = "hidden";
+            //HiddenCantidad.name = "FactInvoiceDetails[" + num + "].InvoiceDetailAmount";
+            //HiddenCantidad.id = num;
+            //HiddenCantidad.value = Cantidad;
+            //HiddenCantidad.type = "hidden";
 
-            HiddenSubtotal.name = "FactInvoiceDetails[" + num + "].InvoiceDetailSubtotal";
-            HiddenSubtotal.value = subtotalIVA;
-            HiddenSubtotal.type = "hidden";
+            //HiddenSubtotal.name = "FactInvoiceDetails[" + num + "].InvoiceDetailSubtotal";
+            //HiddenSubtotal.id = num;
+            //HiddenSubtotal.value = subtotalIVA;
+            //HiddenSubtotal.type = "hidden";
 
-            DivConceptos.appendChild(HiddenIndex);
-            DivConceptos.appendChild(HiddenCantidad);
-            DivConceptos.appendChild(HiddenProducto);
-            DivConceptos.appendChild(HiddenSubtotal);
+            //DivConceptos.appendChild(HiddenIndex);
+            //DivConceptos.appendChild(HiddenCantidad);
+            //DivConceptos.appendChild(HiddenProducto);
+            //DivConceptos.appendChild(HiddenSubtotal);
 
             document.getElementById("txtcantidad").value = "";
             document.getElementById("txtproducto").value = "Producto no seleccionado";
