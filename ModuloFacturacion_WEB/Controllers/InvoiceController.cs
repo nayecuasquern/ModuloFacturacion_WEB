@@ -61,8 +61,13 @@ namespace ModuloFacturacion_WEB.Controllers
             cliente.CliAddres = formData["txtdireccion"];
             if (formData["txttipo"] == "Cliente no seleccionado" || formData["txttipo"] == "")
                 cliente.TypId = 1;
-            else
-                cliente.TypId = int.Parse(formData["txttipo"]);
+            else if ((formData["txttipo"]) == "Efectivo")
+            {
+                cliente.TypId = 1;
+            } else if ((formData["txttipo"]) == "Crédito")
+            {
+                cliente.TypId = 2;
+            }        
             ViewBag.ClienteElegido = cliente;
 
 
@@ -98,6 +103,7 @@ namespace ModuloFacturacion_WEB.Controllers
                         FactInvoiceDetail details = new FactInvoiceDetail();
                         details.InvoiceDetailAmount = oC.InvoiceDetailAmount;
                         details.ProductId = oC.ProductId;
+                        details.InvoiceProductName = oC.InvoiceProductName;
                         details.InvoiceDetailSubtotal = oC.InvoiceDetailSubtotal;
                         details.InvoiceHeadId = factID;
                         ViewBag.Error = details.InvoiceDetailAmount + details.ProductId + details.InvoiceDetailSubtotal + details.InvoiceHeadId;

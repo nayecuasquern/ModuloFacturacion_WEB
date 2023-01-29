@@ -8,7 +8,9 @@
 
         public double? InvoiceDetailSubtotal { get; set; }
 
-        public int? ProductId { get; set; }
+        public string? ProductId { get; set; }
+
+        public string? InvoiceProductName { get; set; }
 
         public int? InvoiceHeadId { get; set; }
 
