@@ -699,13 +699,13 @@
 
             if (!vali) {
               
-                var cantAux = parseInt(Cantidad) + parseInt(Tabla.rows[posicionFila].cells[2].innerHTML);
+                var cantAux = parseInt(Cantidad) + parseInt(Tabla.rows[posicionFila].cells[3].innerHTML);
                 if(cantAux>stockDis){
                     alert("Stock insuficiente")
                     return;
                 }
-                Tabla.rows[posicionFila].cells[2].innerHTML = cantAux;
-                Tabla.rows[posicionFila].cells[4].innerHTML = parseInt(subtotalIVA) + parseInt(Tabla.rows[posicionFila].cells[4].innerHTML);
+                Tabla.rows[posicionFila].cells[3].innerHTML = cantAux;
+                Tabla.rows[posicionFila].cells[5].innerHTML = parseInt(subtotalIVA) + parseInt(Tabla.rows[posicionFila].cells[5].innerHTML);
 
                 sd();
                 limpiarCam()
