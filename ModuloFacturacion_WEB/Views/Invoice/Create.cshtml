@@ -706,7 +706,8 @@
                     return;
                 }
                 Tabla.rows[posicionFila].cells[3].innerHTML = cantAux;
-                Tabla.rows[posicionFila].cells[5].innerHTML = parseInt(subtotalIVA) + parseInt(Tabla.rows[posicionFila].cells[5].innerHTML);
+                Tabla.rows[posicionFila].cells[5].innerHTML = (parseFloat(subtotalIVA) + parseFloat(Tabla.rows[posicionFila].cells[5].innerHTML)).toFixed(2);
+
 
                 sd();
                 limpiarCam()
@@ -743,7 +744,7 @@
             TDPrecio.innerHTML = precio;
             TDCantidad.innerHTML = Cantidad;
             TDIva.innerHTML = ivaText;
-            TDSubtotal.innerHTML = subtotalIVA;
+            TDSubtotal.innerHTML = subtotalIVA.toFixed(2);
 
             Tabla.appendChild(TR);
             num++;
