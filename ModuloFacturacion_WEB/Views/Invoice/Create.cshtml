@@ -22,6 +22,7 @@
                 <h2>
                     FACTURACIÓN
                 </h2>
+                @ViewBag.ErrorMessage
             </div>
             @*        <form method="post" asp-controller="Invoice" asp-action="PDFFact">
         <button type="submit" class="btn btn-danger" value="Generate PDF">
@@ -326,17 +327,13 @@
                         <div class="row">
                             <div class="mb-2">
                                 <label>SUBTOTAL</label>
-                                <input type="number" asp-for="InvoiceSubtotal" class="form-control" id="tdsubtotal" readonly />
-                                <span asp-validation-for="InvoiceSubtotal" class="text-danger"></span>
+                                <input class="form-control" id="tdsubtotal" name="tdsubtotal" value="0" readonly />
 
                                 <label>IVA</label>
-                                <input type="number" asp-for="InvoiceIva" class="form-control" id="tdiva" readonly />
-                                <span asp-validation-for="InvoiceIva" class="text-danger"></span>
+                                <input class="form-control" id="tdiva" name="tdiva" value="0" readonly />
 
                                 <label>TOTAL</label>
-                                <input type ="number" asp-for="InvoiceTotal" class="form-control" id="tdtotal" readonly/>
-                                <span asp-validation-for="InvoiceTotal" class="text-danger"></span>
-
+                                <input class="form-control" id="tdtotal" name="tdtotal" value="0" readonly />
                             </div>
                         </div>
                     </div>
@@ -481,7 +478,7 @@
                         }
                         if (j == 5) {
                             HiddenSubtotal.name = "FactInvoiceDetails[" + i + "].InvoiceDetailSubtotal";
-                            HiddenSubtotal.value = tabla.rows[i].cells[j].innerHTML;
+                            HiddenSubtotal.value = ((tabla.rows[i].cells[j].innerHTML).toString()).replace(".", ",");
                             HiddenSubtotal.type = "hidden";
                         }
                     }
@@ -604,8 +601,46 @@
         $(document).on('click', '.borrar', function (event) {
             event.preventDefault();
             $(this).closest('tr').remove();
-            //document.getElementById(num + "").remove();
-            
+
+            var tabla = document.getElementById("tbProducto");
+            var subtotal = 0;
+            var subtotalTotal = 0;
+            var ivaTemp = 0;
+            var iva = 0;
+            var total = 0;
+
+            if (tabla.rows.length == 0){
+                (document.getElementById("tdsubtotal")).value = 0;
+                (document.getElementById("tdiva")).value = 0;
+                (document.getElementById("tdtotal")).value = 0;
+                return;
+            }
+
+            for (var i = 0; i < tabla.rows.length; i++) {
+                for (var j = 0; j < tabla.rows[i].cells.length; j++) {
+                    if (j == 2) {
+                        var precio = tabla.rows[i].cells[j].innerHTML;
+                    }
+                    if (j == 3) {
+                        var cantidad = tabla.rows[i].cells[j].innerHTML;
+                    }
+                    if (j == 4) {
+                        if (tabla.rows[i].cells[j].innerHTML == "SI") {
+                            subtotal = parseFloat(precio) * parseFloat(cantidad);
+                            ivaTemp = subtotal * 0.12;
+                        }else{
+                            subtotal = parseFloat(precio) * parseFloat(cantidad);
+                            ivaTemp = 0;
+                        }
+                    }
+                }
+                subtotalTotal = subtotal + subtotalTotal;
+                iva = iva + ivaTemp;
+            }
+
+            (document.getElementById("tdsubtotal")).value = (subtotalTotal.toString()).replace(".", ",");
+            (document.getElementById("tdiva")).value = (iva.toString()).replace(".", ",");
+            (document.getElementById("tdtotal")).value = ((subtotalTotal + iva).toString()).replace(".", ",");         
         });
 
         function AgregarConcepto() {
@@ -646,7 +681,7 @@
             var precio = $("#txtprecio").val().replace(/,/g, '.');
             var subtotal = parseFloat(precio) * parseFloat(Cantidad);
 
-            subtotalFinal = subtotal + subtotalFinal;
+            subtotalFinal = subtotal + parseFloat(((document.getElementById("tdsubtotal")).value).replace(",", "."));
 
             var ivaText = (document.getElementById("txtiva")).value;
             var iva = 1.12;
@@ -655,10 +690,11 @@
 
                 var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad) * iva;
                 iva = parseFloat(precio) * parseFloat(Cantidad) * 0.12;
-                ivaTotal = iva + ivaTotal;
+                ivaTotal = iva + parseFloat(((document.getElementById("tdiva")).value).replace(",", "."));
             } else {
                 var subtotalIVA = parseFloat(precio) * parseFloat(Cantidad);
                 iva = 0;
+                ivaTotal = iva + parseFloat(((document.getElementById("tdiva")).value).replace(",", "."));
             }
 
             if (!vali) {
@@ -714,9 +750,10 @@
             sd();
 
             function sd() {
-                (document.getElementById("tdsubtotal")).value = subtotalFinal;
-                (document.getElementById("tdiva")).value = ivaTotal;
-                (document.getElementById("tdtotal")).value = subtotalFinal + ivaTotal;
+                total = subtotalFinal + ivaTotal;
+                (document.getElementById("tdsubtotal")).value = (subtotalFinal.toString()).replace(".", ",");
+                (document.getElementById("tdiva")).value = (ivaTotal.toString()).replace(".", ",");
+                (document.getElementById("tdtotal")).value = (total.toString()).replace(".", ",");
             }
             function limpiarCam() {
                 document.getElementById("txtcantidad").value = "";

@@ -96,6 +96,9 @@ namespace ModuloFacturacion_WEB.Controllers
                 {
                     model.CliIdentification = cliente.CliIdentification;
                     model.InvoiceDate = DateTime.Now;
+                    model.InvoiceSubtotal = Double.Parse(formData["tdsubtotal"]);
+                    model.InvoiceIva = Double.Parse(formData["tdiva"]);
+                    model.InvoiceTotal = Double.Parse(formData["tdtotal"]);
                     int factID = APIConsumer.InsertFactInvoiceHead(apiUrl2, model);
 
                     foreach (var oC in model.FactInvoiceDetails)
@@ -104,7 +107,7 @@ namespace ModuloFacturacion_WEB.Controllers
                         details.InvoiceDetailAmount = oC.InvoiceDetailAmount;
                         details.ProductId = oC.ProductId;
                         details.InvoiceProductName = oC.InvoiceProductName;
-                        details.InvoiceDetailSubtotal = oC.InvoiceDetailSubtotal;
+                        details.InvoiceDetailSubtotal = Double.Parse(oC.InvoiceDetailSubtotal.ToString());
                         details.InvoiceHeadId = factID;
                         ViewBag.Error = details.InvoiceDetailAmount + details.ProductId + details.InvoiceDetailSubtotal + details.InvoiceHeadId;
                         APIConsumer.InsertFactInvoiceDetail(apiUrl4, details);
@@ -112,7 +115,8 @@ namespace ModuloFacturacion_WEB.Controllers
                     return RedirectToAction(nameof(Create));
                 }
                 catch (Exception ex)
-                {           
+                {         
+                    ViewBag.ErrorMessage = ex.Message;
                     return View();
                 }
             }
