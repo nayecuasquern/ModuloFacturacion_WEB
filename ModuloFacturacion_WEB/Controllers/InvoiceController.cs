@@ -60,7 +60,7 @@ namespace ModuloFacturacion_WEB.Controllers
             cliente.CliMail = formData["txtcorreo"];
             cliente.CliAddres = formData["txtdireccion"];
             if (formData["txttipo"] == "Cliente no seleccionado" || formData["txttipo"] == "")
-                cliente.TypId = 1;
+                cliente.TypId = 0;
             else if ((formData["txttipo"]) == "Efectivo")
             {
                 cliente.TypId = 1;
