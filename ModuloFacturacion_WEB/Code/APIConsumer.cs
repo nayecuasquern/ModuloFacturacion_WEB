@@ -1,4 +1,5 @@
 ﻿using ModuloFacturacion_WEB.Models;
+using Newtonsoft.Json;
 using NuGet.Protocol.Plugins;
 
 namespace ModuloFacturacion_WEB.Code
@@ -77,6 +78,14 @@ namespace ModuloFacturacion_WEB.Code
             api.Headers.Add("Content-Type", "application/json");
             var json = api.DownloadString(apiUrl);
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead[]>(json);
+        }
+        public static Models.FactInvoiceHead InvoiceHead(string apiUrl, int id)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl + "/" + id);
+            return JsonConvert.DeserializeObject<List<FactInvoiceHead>>(json)[0];
+            //return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead>(json);
         }
 
         public static Models.Product[] Productos(string apiUrl)

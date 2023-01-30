@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ModuloFacturacion_WEB.Code;
 using ModuloFacturacion_WEB.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Rotativa.AspNetCore;
 
 namespace ModuloFacturacion_WEB.Controllers
 {
@@ -306,5 +307,18 @@ namespace ModuloFacturacion_WEB.Controllers
             }
             return View();
         }
+
+        public IActionResult ImprimirFac(int id)
+        {
+
+            var data = APIConsumer.InvoiceHead("https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/ListaFacturasDetalle", id);
+            return new ViewAsPdf("ImprimirFac", data)
+            {
+                FileName = $"Venta {data.InvoiceHeadId}.pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4
+            };
+        }
+
     }
 }
