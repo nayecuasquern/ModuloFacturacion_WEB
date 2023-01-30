@@ -77,8 +77,10 @@
                                             }
                                         }               
                                     </select>
-                                    <span asp-validation-for="TypId" class="text-danger"></span>
-                                    <button class="btn-outline-warning" asp-action="Create" asp-controller="Invoice">Elegir otro cliente</button>
+                                    <span asp-validation-for="TypId" class="text-danger"></span>             
+                                </div>
+                                <div class="mb-2">
+                                    <button class="btn-info" asp-action="Create" asp-controller="Invoice" onclick="elegirOtroCliente()">Elegir otro cliente</button>
                                 </div>
                             </div>
                         </div>
@@ -119,6 +121,11 @@
                                     {
                                         <input class="form-control form-control-sm"
                                         id="txttipo" name="txttipo" readonly value="Crédito" />
+                                    }
+                                    else if ((((FactClient)ViewBag.ClienteElegido).TypId) == 0)
+                                    {
+                                        <input class="form-control form-control-sm"
+                                   id="txttipo" name="txttipo" readonly value="Cliente no seleccionado" />
                                     }
                                     
 
@@ -175,6 +182,21 @@
                                 {
                                     <input class="form-control form-control-sm"
                                    id="txtcorreo" name="txtcorreo" readonly value="Cliente no seleccionado" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Teléfono</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txttelefono" name="txttelefono" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliPhone)" />
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txttelefono" name="txttelefono" readonly value="Cliente no seleccionado" />
                                 }
                             </div>
                         </div>
@@ -254,7 +276,7 @@
                             <div class="col-sm-1">
                                 <div class="mb-2">
                                     <label for="exampleInputEmail1" class="form-label">Cantidad</label>
-                                    <input type="number" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
+                                    <input type="number" step="1" class="form-control form-control-sm" style="width:80px" id="txtcantidad" name="txtcantidad">
                                 </div>
                             </div>
 
@@ -572,6 +594,9 @@
         });
 
         function AgregarConcepto() {
+
+            var cantidadText = (document.getElementById("txtcantidad").value);
+
             if (document.getElementById("txtproducto").value == "Producto no seleccionado"){
                 alert("Producto no seleccionado")
                 return;
@@ -579,7 +604,7 @@
             if (document.getElementById("txtcantidad").value == "") {
                 alert("Cantidad no establecida")
                 return;
-            } else if (document.getElementById("txtcantidad").value <= 0) {
+            } else if ((document.getElementById("txtcantidad").value <= 0) || cantidadText.indexOf(",") !== -1 || cantidadText.indexOf(".") !== -1) {
                 alert("Cantidad inválida")
                 return;
             }
@@ -679,7 +704,8 @@
             sd();
 
             function sd() {
-                total = subtotalFinal + ivaTotal;
+                ivaTotal = ivaTotal.toFixed(2);
+                total = (parseFloat(subtotalFinal) + parseFloat(ivaTotal)).toFixed(2);
                 (document.getElementById("tdsubtotal")).value = (subtotalFinal.toString()).replace(".", ",");
                 (document.getElementById("tdiva")).value = (ivaTotal.toString()).replace(".", ",");
                 (document.getElementById("tdtotal")).value = (total.toString()).replace(".", ",");
@@ -690,6 +716,16 @@
                 document.getElementById("txtprecio").value = "--";
                 document.getElementById("txtiva").value = "--";
             }
+        }
+    </script>
+    <script>
+        function elegirOtroCliente() {
+            document.getElementById("txtnombre").value = "Cliente no seleccionado";
+            document.getElementById("txtcedula").value = "Cliente no seleccionado";
+            document.getElementById("txtcorreo").value = "Cliente no seleccionado";
+            document.getElementById("txtdireccion").value = "Cliente no seleccionado";
+            document.getElementById("txttipo").value = "Cliente no seleccionado";
+            document.getElementById("txttelefono").value = "Cliente no seleccionado";
         }
     </script>
 }
