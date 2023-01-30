@@ -185,6 +185,21 @@
                                 }
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label">Teléfono</label>
+                                @if (ViewBag.ClienteElegido != null)
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txttelefono" name="txttelefono" readonly value="@(((FactClient)ViewBag.ClienteElegido).CliPhone)" />
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-sm"
+                                   id="txttelefono" name="txttelefono" readonly value="Cliente no seleccionado" />
+                                }
+                            </div>
+                        </div>
                     </div>
 
                     <hr />
@@ -710,6 +725,7 @@
             document.getElementById("txtcorreo").value = "Cliente no seleccionado";
             document.getElementById("txtdireccion").value = "Cliente no seleccionado";
             document.getElementById("txttipo").value = "Cliente no seleccionado";
+            document.getElementById("txttelefono").value = "Cliente no seleccionado";
         }
     </script>
 }
