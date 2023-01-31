@@ -204,14 +204,27 @@ namespace ModuloFacturacion_WEB.Controllers
 
                 foreach (FactClient client in APIConsumer.Clients(apiUrl))
                 {
+                    string tipoCliente = "";
+                    string estadoCliente = "";
+                    string fechaFormateada = ((DateTime)(client.CliBirthday)).ToString("dd/MM/yyyy");
+                    if (client.TypId == 1)
+                        tipoCliente = "Efectivo";
+                    else if (client.TypId == 2)
+                        tipoCliente = "Crédito";
+
+                    if (client.CliStatus == true)
+                        estadoCliente = "Activo";
+                    else if (client.CliStatus == false)
+                        estadoCliente = "Inactivo";
+
                     PdfPCell cell_1 = new PdfPCell(new Phrase(client.CliIdentification.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_2 = new PdfPCell(new Phrase(client.CliName.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
-                    PdfPCell cell_3 = new PdfPCell(new Phrase(client.CliBirthday.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_3 = new PdfPCell(new Phrase(fechaFormateada, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_4 = new PdfPCell(new Phrase(client.CliAddres.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_5 = new PdfPCell(new Phrase(client.CliPhone.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_6 = new PdfPCell(new Phrase(client.CliMail.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
-                    PdfPCell cell_7 = new PdfPCell(new Phrase(client.CliStatus.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
-                    PdfPCell cell_8 = new PdfPCell(new Phrase(client.TypId.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_7 = new PdfPCell(new Phrase(estadoCliente, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_8 = new PdfPCell(new Phrase(tipoCliente, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
 
                     cell_1.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell_2.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -235,7 +248,7 @@ namespace ModuloFacturacion_WEB.Controllers
                 document.Close();
                 writer.Close();
                 var constant = ms.ToArray();
-                return File(constant, "application/vnd", "Report.pdf");
+                return File(constant, "application/vnd", "ClientReport.pdf");
 
             }
             return View();
