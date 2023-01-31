@@ -42,6 +42,7 @@ function loadDataTable() {
             "type": "POST"
         },
         "columns": [
+
             {
                 "data": "cliIdentification",
                 "render": function (data) {

@@ -15,6 +15,16 @@ function loadDataTable() {
             "type": "POST"
         },
         "columns": [
+            {
+                "data": "invoiceHeadId",
+                "render": function (data) {
+                    return `
+                    <div>
+                        <a href="/Invoice/ImprimirFac/${data}" class="btn btn-info"">Imprimir</a>
+                    </div>
+                    `
+                }
+            },
             { "data": "invoiceHeadId", "whidth": "10" },
             {
                 "data": "invoiceDate", "render":

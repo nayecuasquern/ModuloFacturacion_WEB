@@ -27,9 +27,21 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif
+            font-family: Arial, Helvetica, sans-serif;
+            
         }
 
+        #a {
+            font - family: Arial, Helvetica, sans - serif;
+            background - image: url('./img/anula.png');
+            background - repeat: no - repeat;
+            background - position: center bottom;
+            background - size: 200px 200px;
+            z - index: 1;
+        }
+
+       
+         
         p.title {
             font-weight: bold;
         }
@@ -92,53 +104,78 @@
         .td-item {
             border-bottom: 2px solid #E8E8E8 !important;
         }
+
     </style>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"> </script>
 </head>
-<body>
+
+
+ <body>
+    @if (Model.InvoiceStatus == false)
+    {
+        <div style="position: relative;">
+            <img src="./img/anula.png" style="position: absolute; top: 0; left: 0; opacity: 0.3; transform: translate(-50%, -50%);
+    width: 50%;">
+
+        </div>
+    }
+
+    
     <div class="contenedor">
-        <p>@Model.InvoiceDate</p>
+        <b style="font-size:20px">Fecha: @(((DateTime)(Model.InvoiceDate)).ToShortDateString())</b>
+        <br />
+        <br />
+        <br />
         <table style="width:100%">
             
             <tr>
 
-                <td style="text-align:right">
-                    <table style="margin-right:0;margin-left:auto">
+                <td style="text-align:center">
+                    <table class="table table-sm">
                         <tr>
-                            <td><p class="title2">NÚMERO VENTA</p></td>
+                            <td><p style="text-align:left" class="title2">NÚMERO VENTA</p></td>
+                            <td><p style="text-align:right"  class="title2">TIPO DE PAGO</p></td>
+
                         </tr>
                         <tr>
-                            <td>@Model.InvoiceHeadId</td>
+                            <td style="text-align:left; font-size:20px">@Model.InvoiceHeadId</td>
+                            @if (Model.TypId == 1)
+                            {
+                                <td style="text-align:right; font-size:20px">Efectivo</td>
+                            }
+                            else
+                            {
+                                <td style="text-align:right; font-size:20px">Crédito</td>
+                            }
                         </tr>
-                       
+                   
                     </table>
                 </td>
             </tr>
         </table>
         <br />
-        <table style="width:100%">
-            <tr>
 
-                <td>
-                    <table>
+        <table class="table table-borderless">
                         <tr>
-                            <td><p class="title">CÉDULA</p></td>
-                            <td><p class="text">@Model.CliIdentificationNavigation.CliIdentification</p></td>
                             <td><p class="title">NOMBRE</p></td>
                             <td><p class="text">@Model.CliIdentificationNavigation.CliName</p></td>
-                            <td><p class="title">DIRECCIÓN</p></td>
-                            <td><p class="text">@Model.CliIdentificationNavigation.CliAddres</p></td>                          
+                            <td><p class="title">CÉDULA</p></td>
+                            <td><p class="text">@Model.CliIdentificationNavigation.CliIdentification</p></td>                                 
+                            <td><p class="title">CELULAR</p></td>
+                            <td><p class="text">@Model.CliIdentificationNavigation.CliPhone</p></td>
                         </tr>
                         <tr>
                             <td><p class="title">CORREO</p></td>
                             <td><p class="text">@Model.CliIdentificationNavigation.CliMail</p></td>
-                            <td><p class="title">CELULAR</p></td>
-                            <td><p class="text">@Model.CliIdentificationNavigation.CliPhone</p></td>
+                            <td><p class="title">DIRECCIÓN</p></td>
+                            <td><p class="text">@Model.CliIdentificationNavigation.CliAddres</p></td>
                         </tr>
 
                     </table>
-                </td>
-            </tr>
-        </table>
+         
         <br />
         <br />
 
@@ -203,3 +240,11 @@
     </div>
 </body>
 </html>
+@section Scripts {
+        $(document).ready(function () {
+            var f = @Model.InvoiceDate;
+            alert(f)
+            var text = f.getDate() + "/" + f.getMonth() + 1 + "/" + f.getFullYear() + f.;
+            document.getElementById("fecha").value = text;
+        });
+}

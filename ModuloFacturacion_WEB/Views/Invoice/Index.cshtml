@@ -14,13 +14,14 @@
 <div class="col-6">
     <h2 class="text-primary">Lista de Facturas</h2>
 </div>
-<a asp-controller="Invoice" asp-action="ImprimirFac" asp-route-id="98" class="btn btn-info">Imprimir</a>
+
 <div class="container my-4">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <table id="tblData" class="table">
                 <thead class="thead-dark">
                     <tr>
+                        <th></th>
                         <th>N° Factura</th>
                         <th>Fecha</th>
                         <th>Subtotal</th>
@@ -28,8 +29,6 @@
                         <th>Total</th>
                         <th>Cédula cliente</th>
                         <th>Tipo de pago</th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </thead>
             </table>

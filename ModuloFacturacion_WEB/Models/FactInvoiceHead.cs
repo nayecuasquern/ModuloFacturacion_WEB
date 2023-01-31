@@ -15,6 +15,8 @@
         public string? CliIdentification { get; set; }
 
         public int? TypId { get; set; }
+        public bool? InvoiceStatus { get; set; }
+
 
         public virtual FactClient? CliIdentificationNavigation { get; set; }
 
