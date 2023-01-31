@@ -130,6 +130,14 @@ namespace ModuloFacturacion_WEB.Controllers
 
         }
 
+        public IActionResult AnularFac(int id)
+        {
+            FactInvoiceHead fac = APIConsumer.InvoiceHead("https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/ListaFacturasDetalle", id);
+            fac.InvoiceStatus = false;
+            APIConsumer.SaveFactInvoiceHead(apiUrl2, id, fac);
+            return RedirectToAction("Index");
+        }
+
         private List<Product> listaProductos()
         {
             var productos = APIConsumer.Productos(apiUrl3).Where(p => p.prod_stock > 0);
@@ -213,7 +221,6 @@ namespace ModuloFacturacion_WEB.Controllers
         {
             return View();
         }
-
 
         [HttpPost]
         public IActionResult PDFFact()

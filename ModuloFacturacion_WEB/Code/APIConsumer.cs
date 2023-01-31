@@ -47,7 +47,13 @@ namespace ModuloFacturacion_WEB.Code
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(client);
             api.UploadString(apiUrl + "/" + id, "PUT", json);
         }
-
+        public static void SaveFactInvoiceHead(string apiUrl, int id, Models.FactInvoiceHead invoice)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(invoice);
+            api.UploadString(apiUrl + "/" + id, "PUT", json);
+        }
         public static Models.FactClient CreateClient(string apiUrl, Models.FactClient client)
         {
             var api = new System.Net.WebClient();
