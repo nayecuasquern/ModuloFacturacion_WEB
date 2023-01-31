@@ -222,7 +222,6 @@ namespace ModuloFacturacion_WEB.Controllers
             return View();
         }
 
-        [HttpPost]
         public IActionResult PDFFact()
         {
             using (MemoryStream ms = new MemoryStream())
@@ -238,7 +237,7 @@ namespace ModuloFacturacion_WEB.Controllers
                 document.Add(espacio);
                 document.AddTitle("Reporte de Facturas");
 
-                PdfPTable table = new PdfPTable(7);
+                PdfPTable table = new PdfPTable(8);
 
                 PdfPCell cell1 = new PdfPCell(new Phrase("ID", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                 cell1.BackgroundColor = BaseColor.LIGHT_GRAY;
@@ -282,15 +281,38 @@ namespace ModuloFacturacion_WEB.Controllers
                 cell7.VerticalAlignment = Element.ALIGN_CENTER;
                 table.AddCell(cell7);
 
+                PdfPCell cell8 = new PdfPCell(new Phrase("Estado", new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                cell8.BackgroundColor = BaseColor.LIGHT_GRAY;
+                cell8.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell8.VerticalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell8);
+
                 foreach (FactInvoiceHead fact in APIConsumer.InvoiceHead(apiUrl2))
                 {
                     PdfPCell cell_1 = new PdfPCell(new Phrase(fact.InvoiceHeadId.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
-                    PdfPCell cell_2 = new PdfPCell(new Phrase(fact.InvoiceDate.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
-                    PdfPCell cell_3 = new PdfPCell(new Phrase(fact.CliIdentification.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
-                    PdfPCell cell_4 = new PdfPCell(new Phrase(fact.TypId.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+
+                    string fechaFormateada = ((DateTime)(fact.InvoiceDate)).ToString("dd/MM/yyyy");
+
+                    string tipoFactura = "";
+                    string estadoFactura = "";
+
+                    if (fact.TypId == 1)
+                        tipoFactura = "Efectivo";
+                    else if (fact.TypId == 2)
+                        tipoFactura = "Crédito";
+
+                    if (fact.InvoiceStatus == true)
+                        estadoFactura = "Activo";
+                    else if (fact.InvoiceStatus == false)
+                        estadoFactura = "Anulada";
+
+                    PdfPCell cell_2 = new PdfPCell(new Phrase(fechaFormateada, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_3 = new PdfPCell(new Phrase(fact.CliIdentification, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_4 = new PdfPCell(new Phrase(tipoFactura, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_5 = new PdfPCell(new Phrase(fact.InvoiceSubtotal.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_6 = new PdfPCell(new Phrase(fact.InvoiceIva.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
                     PdfPCell cell_7 = new PdfPCell(new Phrase(fact.InvoiceTotal.ToString(), new Font(Font.FontFamily.TIMES_ROMAN, 8)));
+                    PdfPCell cell_8 = new PdfPCell(new Phrase(estadoFactura, new Font(Font.FontFamily.TIMES_ROMAN, 8)));
 
                     cell_1.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell_2.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -299,6 +321,7 @@ namespace ModuloFacturacion_WEB.Controllers
                     cell_5.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell_6.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell_7.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell_8.HorizontalAlignment = Element.ALIGN_CENTER;
 
                     table.AddCell(cell_1);
                     table.AddCell(cell_2);
@@ -307,12 +330,13 @@ namespace ModuloFacturacion_WEB.Controllers
                     table.AddCell(cell_5);
                     table.AddCell(cell_6);
                     table.AddCell(cell_7);
+                    table.AddCell(cell_8);
                 }
                 document.Add(table);
                 document.Close();
                 writer.Close();
                 var constant = ms.ToArray();
-                return File(constant, "application/vnd", "ReportInvoice.pdf");
+                return File(constant, "application/vnd", "InvoiceReport.pdf");
 
             }
             return View();

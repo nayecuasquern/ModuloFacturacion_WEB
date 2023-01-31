@@ -206,7 +206,12 @@ namespace ModuloFacturacion_WEB.Controllers
                 {
                     string tipoCliente = "";
                     string estadoCliente = "";
-                    string fechaFormateada = ((DateTime)(client.CliBirthday)).ToString("dd/MM/yyyy");
+                    string fechaFormateada = "";
+                    if (client.CliBirthday == null)
+                        fechaFormateada = "";
+                    else
+                        fechaFormateada = ((DateTime)client.CliBirthday).ToString("dd/MM/yyyy");
+
                     if (client.TypId == 1)
                         tipoCliente = "Efectivo";
                     else if (client.TypId == 2)
