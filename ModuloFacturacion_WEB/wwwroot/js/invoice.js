@@ -8,6 +8,7 @@ $(document).ready(function () {
 
 function loadDataTable() {
     datatable = $('#tblData').DataTable({
+
         language: {
             "decimal": "",
             "emptyTable": "No hay información",
