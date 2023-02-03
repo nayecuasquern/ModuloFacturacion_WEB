@@ -9,117 +9,126 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
+<body>
 
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title text-primary text-center">Ingreso de cliente</h2>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title text-primary text-center">Ingreso de cliente</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                        <div class="row p-3 border-0">
+                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        </div>
+
+                        @*<input type="hidden" id="clientId" asp-for="CliIdentification" />*@
+
+                        <div class="form-group">
+                            <label>Cédula</label>
+                            <input asp-for="CliIdentification" id="clientId" class="form-control" placeholder="Ingrese la cédula" />
+                            <span asp-validation-for="CliIdentification" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input asp-for="CliName" id="clientName" class="form-control" placeholder="Ingrese los nombres" />
+                            <span asp-validation-for="CliName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <input asp-for="CliAddres" id="clientAddress" class="form-control" placeholder="Ingrese la dirección" />
+                            <span asp-validation-for="CliAddres" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input asp-for="CliMail" id="clientMail" class="form-control" placeholder="Ingrese el correo electrónico" />
+                            <span asp-validation-for="CliMail" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>N° Celular</label>
+                            <input asp-for="CliPhone" id="clientPhone" class="form-control" placeholder="Ingrese el N° Celular" />
+                            <span asp-validation-for="CliPhone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de nacimiento</label>
+                            <input type="date" id="clientDate" asp-for="CliBirthday" class="form-control" placeholder="Ingrese la fecha de nacimiento" />
+                            <span asp-validation-for="CliBirthday" class="text-danger"></span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Estado</label>
+                                <select asp-for="CliStatus" id="clientStatus" class="form-control">
+                                    <option value="True">Activo</option>
+                                    <option value="False">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Tipo</label>
+                                <select asp-for="TypId" id="clientTyp" class="form-control">
+                                    <option type="number" value="1">Efectivo</option>
+                                    <option type="number" value="2">Crédito</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
             </div>
-            <form method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-
-                    <div class="row p-3 border-0">
-                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                    </div>
-
-                    @*<input type="hidden" id="clientId" asp-for="CliIdentification" />*@
-
-                    <div class="form-group">
-                        <label>Cédula</label>
-                        <input asp-for="CliIdentification" id="clientId" class="form-control" placeholder="Ingrese la cédula" />
-                        <span asp-validation-for="CliIdentification" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <input asp-for="CliName" id="clientName" class="form-control" placeholder="Ingrese los nombres" />
-                        <span asp-validation-for="CliName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Dirección</label>
-                        <input asp-for="CliAddres" id="clientAddress" class="form-control" placeholder="Ingrese la dirección" />
-                        <span asp-validation-for="CliAddres" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input asp-for="CliMail" id="clientMail"  class="form-control" placeholder="Ingrese el correo electrónico" />
-                        <span asp-validation-for="CliMail" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>N° Celular</label>
-                        <input asp-for="CliPhone" id="clientPhone" class="form-control" placeholder="Ingrese el N° Celular" />
-                        <span asp-validation-for="CliPhone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Fecha de nacimiento</label>
-                        <input type="date" id="clientDate" asp-for="CliBirthday" class="form-control" placeholder="Ingrese la fecha de nacimiento" />
-                        <span asp-validation-for="CliBirthday" class="text-danger"></span>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Estado</label>
-                            <select asp-for="CliStatus" id="clientStatus" class="form-control">
-                                <option value="True">Activo</option>
-                                <option value="False">Inactivo</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Tipo</label>
-                            <select asp-for="TypId" id="clientTyp" class="form-control">
-                                <option type="number" value="1">Efectivo</option>
-                                <option type="number" value="2">Crédito</option>
-                            </select>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-success">Agregar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<div class="col-6">
-    <h2 class="display-5 fw-bold">Lista de clientes</h2>
-</div>
-
-<button type="button" onclick="Clean()" class="btn btn-info  px-4 me-md-2 fw-bold" data-toggle="modal" data-target="#myModal">Agregar Cliente</button>
-<div class="container my-4">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <table id="tblData" class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th></th>
-                        <th>Cédula</th>
-                        <th>Nombre</th>
-                        <th>Dirección</th>
-                        <th>Correo eletrónico</th>
-                        <th>N° Celular</th>
-                        <th>Fecha de nacimiento</th>
-                        <th>Estado</th>
-                        <th>Tipo</th>
-                        <th>PDF</th>
-                    </tr>
-                </thead>
-            </table>
         </div>
     </div>
 
-</div>
 
-<br />
-<br />
+    <div class="col-6">
+        <h2 class="display-5 fw-bold">Lista de clientes</h2>
+    </div>
+
+    <button type="button" onclick="Clean()" class="btn btn-info  px-4 me-md-2 fw-bold" data-toggle="modal" data-target="#myModal">Agregar Cliente</button>
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <table id="tblData" class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Dirección</th>
+                            <th>Correo eletrónico</th>
+                            <th>N° Celular</th>
+                            <th>Fecha de nacimiento</th>
+                            <th>Estado</th>
+                            <th>Tipo</th>
+                            <th>PDF</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <br />
+    @if (ViewData["Message"] != null)
+    {
+        <script>
+            alert('@ViewData["Message"]');
+        </script>
+    }
+</body>
+
 
 @section Scripts{
-  
+    
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/persona.js"></script>
 

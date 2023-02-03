@@ -26,7 +26,6 @@ namespace ModuloFacturacion_WEB.Controllers
             }
             else
             {
-                Console.WriteLine("ESTEBEBEBEBEEBBEBEBEBEB "+id);
                 client = APIConsumer.Client(apiUrl, id);
                 return View(client);
             }
@@ -93,9 +92,13 @@ namespace ModuloFacturacion_WEB.Controllers
         //}
         public IActionResult ImprimirFacCli(string id)
         {
-            Console.WriteLine(id);
             string con = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/FacturasClientes";
             var data = APIConsumer.InvoiceHeadCli(con, id);
+            if(data.Length == 0)
+            {
+                ViewData["Message"] = "El Cliente no tiene facturas que mostrar";
+                return View("Crear");
+            }
             return new ViewAsPdf("ImprimirFacCli", data)
             {
                 FileName = $"Venta.pdf",

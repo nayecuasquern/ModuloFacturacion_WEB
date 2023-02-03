@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
 using ModuloFacturacion_WEB.Code;
 using ModuloFacturacion_WEB.Models;
+using Rotativa.AspNetCore;
 
 namespace ModuloFacturacion_WEB.Controllers
 {
@@ -135,7 +136,17 @@ namespace ModuloFacturacion_WEB.Controllers
             }
 
         }
-
+        public IActionResult ImprimirFacCli(string id)
+        {
+            string rut = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/FacturasClientes";
+            var data = APIConsumer.InvoiceHeadCli(rut, id);
+            return new ViewAsPdf("ImprimirFac", data)
+            {
+                FileName = $"Venta.pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4
+            };
+        }
 
         public IActionResult PDF()
         {
