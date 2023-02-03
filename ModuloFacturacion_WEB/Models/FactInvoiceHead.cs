@@ -16,8 +16,7 @@
 
         public int? TypId { get; set; }
         public bool? InvoiceStatus { get; set; }
-
-
+        public string? InvoiceNumber { get; set; } 
         public virtual FactClient? CliIdentificationNavigation { get; set; }
 
         public List<FactInvoiceDetail>? FactInvoiceDetails { get; set; }

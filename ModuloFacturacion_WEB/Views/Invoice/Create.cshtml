@@ -35,7 +35,15 @@
                                 <input disabled id="fecha" class="form-control">
                                 <span asp-validation-for="InvoiceDate" class="text-danger"></span>
 
+                                                              
                                 @ViewBag.Error
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-2">
+                                <label class="control-label">Nro Fact:</label>
+                                <input asp-for="InvoiceNumber" name="numeroFactura" disabled value="@ViewBag.UltimoElemento" class="form-control">
+                                <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -491,7 +499,7 @@
     <script>
         $(document).ready(function () {
             var f = new Date();
-            var text = f.getDate() + "/" + f.getMonth() + 1 + "/" + f.getFullYear();
+            var text = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
             document.getElementById("fecha").value = text;
         });
     </script>

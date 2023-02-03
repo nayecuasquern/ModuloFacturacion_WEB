@@ -93,6 +93,14 @@ namespace ModuloFacturacion_WEB.Code
             return JsonConvert.DeserializeObject<List<FactInvoiceHead>>(json)[0];
             //return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead>(json);
         }
+        public static Models.FactInvoiceHead UltimoElemento(string apiUrl)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead>(json);
+            //return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead>(json);
+        }
 
         public static Models.Product[] Productos(string apiUrl)
         {

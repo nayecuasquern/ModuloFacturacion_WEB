@@ -15,6 +15,7 @@ namespace ModuloFacturacion_WEB.Controllers
         string apiUrl2 = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads";
         string apiUrl3 = "https://apisalida.azurewebsites.net/api/Productoes";
         string apiUrl4 = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceDetails";
+        string apiUrlLastElement = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/UltimoElemento";
 
         public IActionResult Index(string? searchFor)
         {
@@ -22,6 +23,7 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaClientes = listaClientes();
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
+            ViewBag.UltimoElemento = ultimoElemento();
 
 
             //return View(APIConsumer.InvoiceHead(apiUrl2));
@@ -36,6 +38,7 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaClientes = listaClientes();
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
+            ViewBag.UltimoElemento = ultimoElemento();
 
             return View();
         }
@@ -46,6 +49,8 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaClientes = listaClientes();
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
+            string lastElement = ultimoElemento();
+            ViewBag.UltimoElemento = lastElement;
             ViewBag.textProducto = "" + formData["textProducto"];
             ViewBag.BanderaDetalleVenta = "false";
 
@@ -101,6 +106,7 @@ namespace ModuloFacturacion_WEB.Controllers
                     model.InvoiceSubtotal = Double.Parse(formData["tdsubtotal"]);
                     model.InvoiceIva = Double.Parse(formData["tdiva"]);
                     model.InvoiceTotal = Double.Parse(formData["tdtotal"]);
+                    model.InvoiceNumber = lastElement;
                     model.InvoiceStatus = true;
                     int factID = APIConsumer.InsertFactInvoiceHead(apiUrl2, model);
 
@@ -164,6 +170,13 @@ namespace ModuloFacturacion_WEB.Controllers
             }).ToList();
 
             return lista;
+        }
+
+        private string ultimoElemento()
+        {
+            FactInvoiceHead resp = APIConsumer.UltimoElemento(apiUrlLastElement);
+            string numero = "001-001-" + ((resp.InvoiceHeadId+1).ToString("D9"));
+            return numero;
         }
 
 
