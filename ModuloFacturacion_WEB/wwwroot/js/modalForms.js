@@ -107,7 +107,7 @@ function loadDataTable() {
                     function (data) {
 
                         if (data == 1) {
-                            return "Efectivo";
+                            return "Efectivx";
                         }
                         if (data == 2) {
                             return "Credito";
@@ -115,6 +115,15 @@ function loadDataTable() {
                         return "X";
 
                     }
+            }, {
+                "data": "cliIdentification",
+                "render": function (data) {
+                    return `
+                    <div>
+                        <a class="btn btn-danger" style="cursor:pointer;">Facturas</a>
+                    </div>
+                    `
+                }
             }
             
         ]

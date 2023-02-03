@@ -91,7 +91,13 @@ namespace ModuloFacturacion_WEB.Code
             api.Headers.Add("Content-Type", "application/json");
             var json = api.DownloadString(apiUrl + "/" + id);
             return JsonConvert.DeserializeObject<List<FactInvoiceHead>>(json)[0];
-            //return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead>(json);
+        }
+        public static FactInvoiceHead[] InvoiceHeadCli(string apiUrl, String id)
+        {
+            var api = new System.Net.WebClient();
+            api.Headers.Add("Content-Type", "application/json");
+            var json = api.DownloadString(apiUrl + "?cedula=" + id);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Models.FactInvoiceHead[]>(json);
         }
         public static Models.FactInvoiceHead UltimoElemento(string apiUrl)
         {

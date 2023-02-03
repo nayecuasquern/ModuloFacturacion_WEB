@@ -12,7 +12,7 @@ namespace ModuloFacturacion_WEB.Models
         [Required(ErrorMessage = "Debe ingresar el Nombre del Cliente")]
         [StringLength(maximumLength: 50, MinimumLength = 2, ErrorMessage = "El Nombre es muy corto")]
         public string? CliName { get; set; }
-
+        [Required(ErrorMessage = "Ingrese una Fecha de nacimiento")]
         public DateTime? CliBirthday { get; set; }
 
         [Required(ErrorMessage = "Ingrese una Dirección")]
