@@ -104,7 +104,7 @@ namespace ModuloFacturacion_WEB.Controllers
             string fecha = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"); ;
             return new ViewAsPdf("ImprimirFacCli", data)
             {
-                FileName = $"{data.First().CliIdentificationNavigation.CliName}"+" "+fecha+".pdf",
+                FileName = $"{data.Last().CliIdentificationNavigation.CliIdentification}"+" "+fecha+".pdf",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
             };
