@@ -121,38 +121,41 @@
 <body>
     <p><b>Fecha de emisión: </b>@DateTime.Today.ToShortDateString()</p>
     <div class="contenedor">
-        <p style="text-align:center; color:#678983; font-size:x-large" class="title2">Datos del Cliente</p>
-        <br />
-        <table class="table table-borderless" style="width:100%">
-                        <tr>
-                            <td><p class="title">NOMBRE</p></td>
-                            <td><p class="text">@Model.First().CliIdentificationNavigation.CliName</p></td>
-                            <td><p class="title">CÉDULA</p></td>
-                <td><p class="text">@Model.First().CliIdentificationNavigation.CliIdentification</p></td>
-                <td><p class="title">CELULAR</p></td>
-                <td><p class="text">@Model.First().CliIdentificationNavigation.CliPhone</p></td>
-                        </tr>
-                        <tr>
-                            <td><p class="title">CORREO</p></td>
-                <td><p class="text">@Model.First().CliIdentificationNavigation.CliMail</p></td>
-                            <td><p class="title">DIRECCIÓN</p></td>
-                <td><p class="text">@Model.First().CliIdentificationNavigation.CliAddres</p></td>
-                        </tr>
+            <p style="text-align:center; color:#678983; font-size:x-large" class="title2">Datos del Cliente</p>
+            <br />
+            <table class="table table-borderless" style="width:100%">
+                <tr>
+                    <td><p class="title">NOMBRE</p></td>
+                    <td><p class="text">@Model.First().CliIdentificationNavigation.CliName</p></td>
+                    <td><p class="title">CÉDULA</p></td>
+                    <td><p class="text">@Model.First().CliIdentificationNavigation.CliIdentification</p></td>
+                    <td><p class="title">CELULAR</p></td>
+                    <td><p class="text">@Model.First().CliIdentificationNavigation.CliPhone</p></td>
+                </tr>
+                <tr>
+                    <td><p class="title">CORREO</p></td>
+                    <td><p class="text">@Model.First().CliIdentificationNavigation.CliMail</p></td>
+                    <td><p class="title">DIRECCIÓN</p></td>
+                    <td><p class="text">@Model.First().CliIdentificationNavigation.CliAddres</p></td>
+                </tr>
 
-                    </table>
+            </table>
 
 
-     <br/>
+            <br/>
         <p style="text-align:left; color:#678983;font-size:x-large" class="title2">Historial de facturas</p>
 <br />
 @foreach (var item in Model)
     {
 
+              
+
             <table class="tbIn" style="width:100%">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="tbth">ID</th>
-                    <th class="tbth">Fecha</th>
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="tbth">ID</th>
+                       
+                        <th class="tbth">Fecha</th>
                     <th class="tbth">Tipo de Pago</th>
                     <th class="tbth">Estado</th>      
                 </tr>

@@ -366,6 +366,19 @@ namespace ModuloFacturacion_WEB.Controllers
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
             };
         }
+        public IActionResult ImprimirFacAll()
+        {
+            string con = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/FacturasClientes";
+            var data = APIConsumer.InvoiceHeadCli(con, "");
+            string fecha = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"); ;
+
+            return new ViewAsPdf("ImprimirFacAll", data)
+            {
+                FileName = $"Facturas" + " " + fecha + ".pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4
+            };
+        }
 
     }
 }

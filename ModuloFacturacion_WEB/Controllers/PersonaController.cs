@@ -91,17 +91,19 @@ namespace ModuloFacturacion_WEB.Controllers
         //    return View(cliente);
         //}
         public IActionResult ImprimirFacCli(string id)
-        {
+        {          
             string con = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/FacturasClientes";
             var data = APIConsumer.InvoiceHeadCli(con, id);
-            if(data.Length == 0)
+
+            if (data.Length == 0)
             {
                 ViewData["Message"] = "El Cliente no tiene facturas que mostrar";
                 return View("Crear");
             }
+            string fecha = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"); ;
             return new ViewAsPdf("ImprimirFacCli", data)
             {
-                FileName = $"Venta.pdf",
+                FileName = $"{data.First().CliIdentificationNavigation.CliName}"+" "+fecha+".pdf",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
             };
