@@ -34,6 +34,9 @@ function Identi() {
     clientId.readOnly = true;
 }
 function loadDataTable() {
+    var table = $('#tblData').DataTable();
+    table.destroy();
+    
     datatable = $('#tblData').DataTable({
         language: {
             "decimal": "",

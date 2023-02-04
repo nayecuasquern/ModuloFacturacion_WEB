@@ -361,7 +361,7 @@ namespace ModuloFacturacion_WEB.Controllers
             var data = APIConsumer.InvoiceHead("https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/ListaFacturasDetalle", id);
             return new ViewAsPdf("ImprimirFac", data)
             {
-                FileName = $"Venta {data.InvoiceHeadId}.pdf",
+                FileName = $"Factura Nro {data.InvoiceNumber}.pdf",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
             };
