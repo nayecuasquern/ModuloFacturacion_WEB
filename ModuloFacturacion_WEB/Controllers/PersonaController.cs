@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModuloFacturacion_WEB.Code;
+using ModuloFacturacion_WEB.Extensions;
 using ModuloFacturacion_WEB.Models;
 using Rotativa.AspNetCore;
 
+
 namespace ModuloFacturacion_WEB.Controllers
 {
-    public class PersonaController : Controller
+    public class PersonaController : BaseController
     {
 
         string apiUrl = "https://apifacturacion1.azurewebsites.net/api/FactClients";
@@ -17,7 +19,6 @@ namespace ModuloFacturacion_WEB.Controllers
 
         public async Task<IActionResult> Crear(string? id)
         {
-            
             FactClient client = new FactClient();
             if (id == null || id.Equals(""))
             {
@@ -97,7 +98,7 @@ namespace ModuloFacturacion_WEB.Controllers
 
             if (data.Length == 0)
             {
-                ViewData["Message"] = "El Cliente no tiene facturas que mostrar";
+                TempData["notification"] = "Swal.fire('Oops','El cliente no tiene facturas.', 'info')";
                 return View("Crear");
             }
             string fecha = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"); ;
