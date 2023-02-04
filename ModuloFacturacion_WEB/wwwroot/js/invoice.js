@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
 
-    loadDataTable();   
+    loadDataTable();
 
 });
 
@@ -36,7 +36,7 @@ function loadDataTable() {
         },
         "columns": [
             {
-                "data": { "invoiceHeadId": "invoiceHeadId", "invoiceStatus":"invoiceStatus" } ,
+                "data": { "invoiceHeadId": "invoiceHeadId", "invoiceStatus": "invoiceStatus" },
                 "render": function (data) {
                     if (data.invoiceStatus) {
                         return `
