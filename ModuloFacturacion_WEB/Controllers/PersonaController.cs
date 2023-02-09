@@ -60,7 +60,6 @@ namespace ModuloFacturacion_WEB.Controllers
                     APIConsumer.SaveClient(apiUrl, cliente.CliIdentification, cliente);
                     return RedirectToAction(nameof(Crear), new { id = "" });
 
-
                 }
 
             }
