@@ -36,10 +36,7 @@
 
                                 <label asp-for="InvoiceDate" class="control-label">Fecha</label>
                                 <input disabled id="fecha" class="form-control">
-                                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
-
-                                                              
-                                @ViewBag.Error
+                                <span asp-validation-for="InvoiceDate" class="text-danger"></span>                                                         
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -295,6 +292,9 @@
                                 <input type="button" class="btn btn-success mb-2 btn-sm" id="btnAgregar" value="Agregar" onclick="AgregarConcepto(); return false;" />
                                 <button type="button" value="Create" class="btn btn-info mb-2 btn-sm" id="btnTerminar" onclick="terminar(); return false;">Terminar</button>
                                 <input type="hidden" id="terminarfactura" name="terminarfactura" />
+                                <a type="hidden" id="imprimir" asp-action="ImprimirFac" asp-controller="Invoice" asp-route-id="100" ></a>
+                                <a type="hidden" id="redireccionar" asp-action="Create" asp-controller="Invoice" ></a>
+
                             </div>
                         </div>
 
@@ -393,6 +393,7 @@
 
     <script>
         function documentoCargado(){
+
             if (@ViewBag.BanderaDetalleVenta == true){
                 let element = document.getElementById("divDetalleVenta");        
                 let hidden = element.getAttribute("hidden");
@@ -405,8 +406,12 @@
                 let element3 = document.getElementById("divSeleccionarTipoPago");
                 let hidden3 = element3.getAttribute("hidden");
                 element3.removeAttribute("hidden");
+            }
 
-            }                
+            if (@(ViewBag.ImprimirFactura) == true) {
+                window.open("/Invoice/ImprimirFac?id=" + @ViewBag.ultimaFac, "_blank");
+                document.getElementById("redireccionar").click();
+            }
         }
         document.addEventListener("DOMContentLoaded", documentoCargado, false);
     </script>
@@ -482,6 +487,18 @@
                     document.forms[0].submit();
                 }
             })
+        }
+
+        const button = document.querySelector("#btnTerminar");
+        button.addEventListener("click", terminar);
+
+        async function getData() {
+            return new Promise((resolve) => {
+                document.forms[0].submit()
+                setTimeout(() => {
+                    resolve("Data obtenida");
+                }, 1000);
+            });
         }
 
     </script>

@@ -24,6 +24,7 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
             ViewBag.UltimoElemento = ultimoElemento();
+            ViewBag.ImprimirFactura = false;
 
 
             //return View(APIConsumer.InvoiceHead(apiUrl2));
@@ -39,6 +40,8 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
             ViewBag.UltimoElemento = ultimoElemento();
+            ViewBag.ImprimirFactura = false;
+
 
             return View();
         }
@@ -50,6 +53,7 @@ namespace ModuloFacturacion_WEB.Controllers
             ViewBag.ListaTipoPago = listaTipoPago();
             ViewBag.ListaProductos = listaProductos();
             string lastElement = ultimoElemento();
+            ViewBag.ImprimirFactura = false;
             ViewBag.UltimoElemento = lastElement;
             ViewBag.textProducto = "" + formData["textProducto"];
             ViewBag.BanderaDetalleVenta = "false";
@@ -77,7 +81,6 @@ namespace ModuloFacturacion_WEB.Controllers
             }        
             ViewBag.ClienteElegido = cliente;
 
-
             if (formData["mostrarDatosCliente"] == "SI")
             {
                 var datos = APIConsumer.ClienteElegido(apiUrl + "/" + formData["cedulaClienteElegido"]);
@@ -93,9 +96,13 @@ namespace ModuloFacturacion_WEB.Controllers
                 } else
                 {
                     ViewBag.IVA = "NO";
-                }
-                
+                }              
             }
+
+            //if (formData["imprimirFact"] == "SI")
+            //{
+            //    ViewBag.ImprimirFactura = "SI";
+            //}
 
             if (formData["terminarfactura"] == "SI" && model.FactInvoiceDetails!=null)
             {
@@ -123,7 +130,9 @@ namespace ModuloFacturacion_WEB.Controllers
                     }
                     ImprimirFac(factID);
 
-                   return RedirectToAction(nameof(Create));
+                    ViewBag.ImprimirFactura = "true";
+                    //return RedirectToAction(nameof(Create));
+                    return View();
                 }
                 catch (Exception ex)
                 {         
@@ -176,6 +185,7 @@ namespace ModuloFacturacion_WEB.Controllers
         {
             FactInvoiceHead resp = APIConsumer.UltimoElemento(apiUrlLastElement);
             string numero = "001-001-" + ((resp.InvoiceHeadId+1).ToString("D9"));
+            ViewBag.ultimaFac = resp.InvoiceHeadId + 1;
             return numero;
         }
 
