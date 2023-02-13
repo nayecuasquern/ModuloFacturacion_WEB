@@ -5,6 +5,10 @@ using ModuloFacturacion_WEB.Code;
 using ModuloFacturacion_WEB.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
+using System.Data.SqlClient;
+using System.Data;
+using System.Text;
+using ClosedXML.Excel;
 
 namespace ModuloFacturacion_WEB.Controllers
 {
@@ -388,6 +392,48 @@ namespace ModuloFacturacion_WEB.Controllers
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
             };
+        }
+
+        public FileResult ExportarExcel()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection cn = new SqlConnection("Data Source=jjmalesg.database.windows.net;Initial Catalog=grupo4DB;User ID=jeffersonmales;Password=Buenhombre1;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"))
+            {
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendLine("select hd.invoice_number as NÚMERO_FACTURA, hd.invoice_date as FECHA," +
+                    "hd.cli_identification as CLIENTE_CÉDULA, cl.cli_name as CLIENTE_NOMBRE," +
+                    "ty.typ as TIPO_PAGO, hd.invoice_status as ESTADO, hd.invoice_subtotal as SUBTOTAL," +
+                    "hd.invoice_IVA as IVA, hd.invoice_total as TOTAL from fact_client cl inner join fact_invoice_head hd" +
+                    " on cl.cli_identification = hd.cli_identification inner join fact_pay_type ty on hd.typ_id = ty.typ_id " +
+                    "group by hd.invoice_number, hd.invoice_date, hd.cli_identification, cl.cli_name, ty.typ, hd.invoice_status, hd.invoice_subtotal, " +
+                    "hd.invoice_IVA, hd.invoice_total;");
+                
+                SqlCommand cmd = new SqlCommand(sb.ToString(), cn);
+                cmd.CommandType = CommandType.Text;
+
+                cn.Open();
+
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+            }
+
+            dt.TableName = "Datos Facturas";
+            
+            using(XLWorkbook libro = new XLWorkbook())
+            {
+                var hoja = libro.Worksheets.Add(dt);
+
+                hoja.ColumnsUsed().AdjustToContents();
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    libro.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Reporte Facturas" + ".xlsx");
+                }
+            }
         }
 
     }
