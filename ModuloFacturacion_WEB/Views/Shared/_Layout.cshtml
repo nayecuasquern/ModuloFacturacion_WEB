@@ -13,8 +13,10 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/limonte-sweetalert2/sweetalert2.min.css"/>
+    <script type="text/javascript" src="lib.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <style type="text/css">
@@ -76,6 +78,39 @@
                             <a class="nav-link dropdown-toggle" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reportes</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
                                 <a class="dropdown-item" asp-controller="Client" asp-action="PDF">Clientes PDF</a>
+                                <input class="dropdown-item" onclick="Alerta()" value="Facturas Cliente"/>
+                                
+                                <script>
+                                    async function Alerta(){
+                                        const { value: cedula } = await Swal.fire({
+                                            title: 'Ingrese la cédula del cliente:',
+                                            input: 'number',
+                                            inputAttributes: {
+                                                maxlength: 10,
+                                                minlength: 10,
+                                                autocapitalize: 'off',
+                                                autocorrect: 'off'
+                                            },
+                                            inputValidator: (value) => {
+                                                if (value.length != 10 && value.length != 0 ) {
+                                                    return 'Cédula no válida'
+                                                }
+                                            },
+                                            inputPlaceholder: 'Cédula Cliente'
+                                        })
+
+
+
+                                        if (cedula) {
+                                            window.open("/Persona/ImprimirFacCli?id=" + cedula, "_self");
+                                        }
+
+                                        if(cedula == ""){
+                                            window.open("/Invoice/ImprimirFacAll", "_self");
+                                        }
+                                    }
+                                    
+                                </script>
                                 <a class="dropdown-item" asp-controller="Invoice" asp-action="ImprimirFacAll">Facturas PDF</a>
                                 <a class="dropdown-item" asp-controller="Invoice" asp-action="ExportarExcel">Facturas Excel</a>
                             </div>
@@ -125,11 +160,14 @@
         });
 
     </script>
+
+
 @*
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>@*
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -90,6 +90,18 @@ namespace ModuloFacturacion_WEB.Controllers
         //    }
         //    return View(cliente);
         //}
+        private List<FactClient> listaClientes()
+        {
+            var clientes = APIConsumer.Clients(apiUrl);
+            var lista = clientes.Select(f => new FactClient
+            {
+                CliIdentification = f.CliIdentification,
+                CliName = f.CliName
+            }).ToList();
+
+            return lista;
+        }
+
         public IActionResult ImprimirFacCli(string id)
         {          
             string con = "https://apifacturacion1.azurewebsites.net/api/FactInvoiceHeads/FacturasClientes";
@@ -97,6 +109,25 @@ namespace ModuloFacturacion_WEB.Controllers
 
             if (data.Length == 0)
             {
+                var cont = 0;
+                var lista = listaClientes();
+
+                for(int i = 0; i < lista.Count; i++)
+                {
+                    if (lista[i].CliIdentification == id)
+                    {
+                        cont++;
+                        break;
+                    }     
+                    
+                }
+
+                if(cont == 0)
+                {
+                    TempData["notification"] = "Swal.fire('Oops','El cliente no está registrado.', 'info')";
+                    return RedirectToAction("Index", "Home");
+                }
+
                 TempData["notification"] = "Swal.fire('Oops','El cliente no tiene facturas.', 'info')";
                 return View("Crear");
             }
