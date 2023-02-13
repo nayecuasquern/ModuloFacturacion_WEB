@@ -409,8 +409,11 @@
             }
 
             if (@(ViewBag.ImprimirFactura) == true) {
-                window.open("/Invoice/ImprimirFac?id=" + @ViewBag.ultimaFac, "_blank");
-                document.getElementById("redireccionar").click();
+                window.open("/Invoice/ImprimirFac?id=" + @ViewBag.ultimaFac, "_self");
+                setTimeout(function () {
+                    document.getElementById("redireccionar").click();
+                }, 1500);
+                
             }
         }
         document.addEventListener("DOMContentLoaded", documentoCargado, false);
