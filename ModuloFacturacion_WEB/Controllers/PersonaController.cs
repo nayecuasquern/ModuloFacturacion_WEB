@@ -31,6 +31,41 @@ namespace ModuloFacturacion_WEB.Controllers
                 return View(client);
             }
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Crear(FactClient cliente)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        var datos = APIConsumer.Clients(apiUrl);
+        //        bool aux = true;
+
+        //        foreach (var client in datos)
+        //        {
+        //            if (client.CliIdentification.Equals(cliente.CliIdentification))
+        //            {
+        //                aux = false;
+        //                break;
+        //            }
+        //        }
+
+        //        if (aux)
+        //        {
+        //            var newdata = APIConsumer.CreateClient(apiUrl, cliente);
+        //            return RedirectToAction(nameof(Crear), new { id = "" });
+        //        }
+        //        else
+        //        {
+        //            APIConsumer.SaveClient(apiUrl, cliente.CliIdentification, cliente);
+        //            return RedirectToAction(nameof(Crear), new { id = "" });
+
+        //        }
+
+        //    }
+        //    return View(cliente);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(FactClient cliente)
@@ -39,28 +74,42 @@ namespace ModuloFacturacion_WEB.Controllers
             if (ModelState.IsValid)
             {
                 var datos = APIConsumer.Clients(apiUrl);
-                bool aux = true;
 
                 foreach (var client in datos)
-                {                    
-                    if(client.CliIdentification.Equals(cliente.CliIdentification))
+                {
+                    if (client.CliIdentification.Equals(cliente.CliIdentification))
                     {
-                        aux = false;
-                        break;
+                        TempData["notification"] = "Swal.fire('Cliente Creado', '','info')";
+                        return View(cliente);
                     }
                 }
+                var newdata = APIConsumer.CreateClient(apiUrl, cliente);
+                return RedirectToAction(nameof(Crear), new { id = "" });
 
-                if (aux)
-                {
-                    var newdata = APIConsumer.CreateClient(apiUrl, cliente);
-                    return RedirectToAction(nameof(Crear), new { id = "" });
-                }
-                else
-                {
-                    APIConsumer.SaveClient(apiUrl, cliente.CliIdentification, cliente);
-                    return RedirectToAction(nameof(Crear), new { id = "" });
+            }
+            TempData["notification"] = "Swal.fire('Cedula invalida', '','info')";
 
+            return RedirectToAction("Crear");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(FactClient cliente)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var datos = APIConsumer.Clients(apiUrl);
+
+                foreach (var client in datos)
+                {
+                    if (client.CliIdentification.Equals(cliente.CliIdentification))
+                    {
+                        TempData["notification"] = "Swal.fire('Cliente Creado', 'info')";
+                        return View(cliente);
+                    }
                 }
+                var newdata = APIConsumer.CreateClient(apiUrl, cliente);
+                return RedirectToAction(nameof(Crear), new { id = "" });
 
             }
             return View(cliente);
