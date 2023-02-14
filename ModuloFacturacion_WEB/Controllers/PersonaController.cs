@@ -79,17 +79,17 @@ namespace ModuloFacturacion_WEB.Controllers
                 {
                     if (client.CliIdentification.Equals(cliente.CliIdentification))
                     {
-                        TempData["notification"] = "Swal.fire('Cliente Creado', '','info')";
-                        return View(cliente);
+                        TempData["notification"] = "Swal.fire('Cédula ya ingresada', '','info')";
+                        return RedirectToAction(nameof(Crear), new { id = "" });
                     }
                 }
                 var newdata = APIConsumer.CreateClient(apiUrl, cliente);
                 return RedirectToAction(nameof(Crear), new { id = "" });
 
             }
-            TempData["notification"] = "Swal.fire('Cedula invalida', '','info')";
+            TempData["notification"] = "Swal.fire('Cédula invalida', '','info')";
 
-            return RedirectToAction("Crear");
+            return RedirectToAction(nameof(Crear), new { id = "" });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
