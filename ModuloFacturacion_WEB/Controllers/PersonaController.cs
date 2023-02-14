@@ -79,15 +79,16 @@ namespace ModuloFacturacion_WEB.Controllers
                 {
                     if (client.CliIdentification.Equals(cliente.CliIdentification))
                     {
-                        TempData["notification"] = "Swal.fire('Cédula ya ingresada', '','info')";
+                        TempData["notification"] = "Swal.fire('Cédula ya ingresada', '','error')";
                         return RedirectToAction(nameof(Crear), new { id = "" });
                     }
                 }
+                TempData["notification"] = "Swal.fire('Cliente ingresado con éxito', '','success')";
                 var newdata = APIConsumer.CreateClient(apiUrl, cliente);
                 return RedirectToAction(nameof(Crear), new { id = "" });
 
             }
-            TempData["notification"] = "Swal.fire('Cédula invalida', '','info')";
+            TempData["notification"] = "Swal.fire('Cédula invalida', '','error')";
 
             return RedirectToAction(nameof(Crear), new { id = "" });
         }
@@ -98,21 +99,14 @@ namespace ModuloFacturacion_WEB.Controllers
 
             if (ModelState.IsValid)
             {
-                var datos = APIConsumer.Clients(apiUrl);
-
-                foreach (var client in datos)
-                {
-                    if (client.CliIdentification.Equals(cliente.CliIdentification))
-                    {
-                        TempData["notification"] = "Swal.fire('Cliente Creado', 'info')";
-                        return View(cliente);
-                    }
-                }
-                var newdata = APIConsumer.CreateClient(apiUrl, cliente);
-                return RedirectToAction(nameof(Crear), new { id = "" });
+                TempData["notification"] = "Swal.fire('Cliente modificado con éxito', '','success')";
+                APIConsumer.SaveClient(apiUrl, cliente.CliIdentification, cliente);
+                return RedirectToAction("Crear");
 
             }
-            return View(cliente);
+            TempData["notification"] = "Swal.fire('Datos incorrectos', '','error')";
+
+            return RedirectToAction("Crear");
         }
 
         //[HttpPost]

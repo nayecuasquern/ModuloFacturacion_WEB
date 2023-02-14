@@ -115,7 +115,7 @@ $('.btn-anular').on('click', function (e) {
                         return fecha_actual
                     }
             },
-            { "data": "invoiceSubtotal", "whidth": "5"},
+            { "data": "invoiceSubtotal", "whidth": "5" },
             { "data": "invoiceIva", "whidth": "10" },
             { "data": "invoiceTotal", "whidth": "10" },
             { "data": "cliIdentification", "whidth": "10" },

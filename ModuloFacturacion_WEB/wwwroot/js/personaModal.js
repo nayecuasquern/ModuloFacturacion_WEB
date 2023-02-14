@@ -74,7 +74,7 @@ function loadDataTable() {
                         <a onclick="Identi()" href="/Persona/Crear/${data}"  class="btn btn-success text-white" style="cursor:pointer;">Editar</a>
                     </div>
                     `
-                }, "whidth": "5" 
+                }, "whidth": "5"
             },
             { "data": "cliIdentification", "whidth": "10" },
             { "data": "cliName", "whidth": "10" },

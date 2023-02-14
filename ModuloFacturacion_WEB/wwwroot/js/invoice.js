@@ -123,7 +123,7 @@ $('.btn-anular').on('click', function (e) {
                             return "Efectivo";
                         }
                         if (data == 2) {
-                            return "Credito";
+                            return "Crédito";
                         }
                         return "X";
 
