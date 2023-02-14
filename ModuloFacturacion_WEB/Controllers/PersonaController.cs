@@ -88,7 +88,7 @@ namespace ModuloFacturacion_WEB.Controllers
                 return RedirectToAction(nameof(Crear), new { id = "" });
 
             }
-            TempData["notification"] = "Swal.fire('Cédula invalida', '','error')";
+            TempData["notification"] = "Swal.fire('Datos inválidos', '','error')";
 
             return RedirectToAction(nameof(Crear), new { id = "" });
         }
@@ -104,7 +104,7 @@ namespace ModuloFacturacion_WEB.Controllers
                 return RedirectToAction("Crear");
 
             }
-            TempData["notification"] = "Swal.fire('Datos incorrectos', '','error')";
+            TempData["notification"] = "Swal.fire('Datos inválidos', '','error')";
 
             return RedirectToAction("Crear");
         }
